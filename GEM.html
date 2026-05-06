@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guérir en Mer 66 — Application des sorties</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bleu-marine:#1c2d4f;       /* bleu officiel des logos */
+    --bleu-marine-clair:#2a4070;
+    --bleu-profond:#0e2545;
+    --vert-officiel:#22a942;     /* vert du logo national */
+    --vert-officiel-fonce:#1a8a35;
+    --turquoise:#3eb1c8;          /* turquoise du compas GEM66 */
+    --vert-olive:#5b7d4e;         /* olive du compas GEM66 */
+    --creme:#fcf2bd;              /* étoile du compas */
+    --ecume:#eef3f7;
+    --sable:#f5efe2;
+    --texte:#1a2c3a;
+    --texte-doux:#5a6b78;
+    --blanc:#ffffff;
+    --bordure:#dde6e9;
+    --ombre:0 4px 24px rgba(28,45,79,0.08);
+    --ombre-forte:0 8px 32px rgba(28,45,79,0.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--texte);
+    background:var(--ecume);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.2;color:var(--bleu-profond)}
+  h1{font-size:clamp(2rem,5vw,3.5rem)}
+  h2{font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:1rem}
+  h3{font-size:1.4rem;margin-bottom:.5rem}
+  h4{font-size:1.15rem;margin-bottom:.3rem}
+  a{color:var(--turquoise);text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none}
+
+  /* ===== HEADER ===== */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--bordure);
+  }
+  .nav{
+    max-width:1200px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1rem 1.5rem;
+  }
+  .logo{display:flex;align-items:center;gap:.7rem;cursor:pointer}
+  .logo-mark{
+    width:42px;height:42px;border-radius:50%;
+    background:var(--bleu-marine);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--ombre);
+    overflow:hidden;
+  }
+  .logo-mark svg{width:42px;height:42px}
+  .logo-text{display:flex;flex-direction:column;line-height:1.1}
+  .logo-text strong{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--bleu-profond);letter-spacing:.5px}
+  .logo-text span{font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--turquoise);font-weight:500}
+  .nav-links{display:flex;gap:.3rem;align-items:center}
+  .nav-link{
+    padding:.5rem 1rem;border-radius:8px;
+    background:transparent;color:var(--texte-doux);
+    font-size:.92rem;font-weight:500;
+    transition:all .2s;
+  }
+  .nav-link:hover{background:var(--ecume);color:var(--bleu-profond)}
+  .nav-link.active{background:var(--bleu-profond);color:var(--blanc)}
+  .burger{display:none;background:none;font-size:1.5rem;color:var(--bleu-profond)}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    background:linear-gradient(135deg,var(--bleu-marine) 0%,var(--bleu-marine-clair) 70%,var(--turquoise) 100%);
+    color:var(--blanc);
+    overflow:hidden;
+    padding:5rem 1.5rem 7rem;
+  }
+  .hero::after{
+    content:"";position:absolute;bottom:-2px;left:0;right:0;height:60px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C300,60 600,0 900,30 C1050,45 1150,15 1200,30 L1200,60 L0,60 Z' fill='%23e8f1f2'/%3E%3C/svg%3E") no-repeat;
+    background-size:cover;
+  }
+  .hero-content{max-width:1200px;margin:0 auto;position:relative;z-index:2}
+  .hero h1{color:var(--blanc);max-width:780px;margin-bottom:1.2rem}
+  .hero h1 em{color:var(--vert-officiel);font-style:normal}
+  .hero-sub{font-size:1.15rem;max-width:620px;color:rgba(255,255,255,0.92);margin-bottom:2rem}
+  .hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
+  .btn{
+    padding:.85rem 1.6rem;border-radius:10px;font-weight:600;font-size:.95rem;
+    transition:all .2s;display:inline-flex;align-items:center;gap:.5rem;
+  }
+  .btn-primary{background:var(--vert-officiel);color:var(--bleu-profond)}
+  .btn-primary:hover{background:#f0c167;transform:translateY(-2px);box-shadow:var(--ombre-forte)}
+  .btn-ghost{background:rgba(255,255,255,0.15);color:var(--blanc);border:1px solid rgba(255,255,255,0.3)}
+  .btn-ghost:hover{background:rgba(255,255,255,0.25)}
+  .btn-secondary{background:var(--bleu-profond);color:var(--blanc)}
+  .btn-secondary:hover{background:#0e4d72}
+  .btn-outline{background:transparent;color:var(--bleu-profond);border:1.5px solid var(--bleu-profond)}
+  .btn-outline:hover{background:var(--bleu-profond);color:var(--blanc)}
+
+  /* ===== SECTIONS ===== */
+  section.view{display:none;animation:fadein .4s ease-out}
+  section.view.active{display:block}
+  @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .container{max-width:1200px;margin:0 auto;padding:3rem 1.5rem}
+  .section-tag{
+    display:inline-block;padding:.3rem .8rem;
+    background:var(--ecume);color:var(--bleu-marine-clair);
+    border-radius:99px;font-size:.75rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.8rem;
+  }
+  .section-intro{color:var(--texte-doux);max-width:680px;margin-bottom:2.5rem;font-size:1.05rem}
+
+  /* ===== STATS ===== */
+  .stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;
+    margin-top:-4rem;position:relative;z-index:5;
+  }
+  .stat{
+    background:var(--blanc);padding:1.8rem;border-radius:16px;
+    box-shadow:var(--ombre);text-align:center;
+  }
+  .stat-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--bleu-marine-clair);line-height:1}
+  .stat-label{color:var(--texte-doux);font-size:.9rem;margin-top:.3rem}
+
+  /* ===== MISSION ===== */
+  .mission{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;
+    margin-top:2rem;
+  }
+  .mission-card{
+    background:var(--blanc);padding:2rem;border-radius:16px;
+    border-top:3px solid var(--turquoise);transition:transform .2s;
+  }
+  .mission-card:hover{transform:translateY(-4px)}
+  .mission-icon{
+    width:48px;height:48px;border-radius:12px;
+    background:var(--ecume);color:var(--bleu-marine-clair);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.4rem;margin-bottom:1rem;
+  }
+
+  /* ===== SORTIES ===== */
+  .filters{
+    display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;
+  }
+  .chip{
+    padding:.4rem .9rem;border-radius:99px;font-size:.85rem;
+    background:var(--blanc);color:var(--texte-doux);
+    border:1px solid var(--bordure);cursor:pointer;transition:all .2s;
+  }
+  .chip:hover{border-color:var(--turquoise)}
+  .chip.active{background:var(--bleu-profond);color:var(--blanc);border-color:var(--bleu-profond)}
+  /* Vue Sorties simplifiée — liste mensuelle */
+  .month-block{margin-bottom:2.5rem}
+  .month-title{
+    display:flex;align-items:baseline;gap:.8rem;
+    padding-bottom:.6rem;margin-bottom:1rem;
+    border-bottom:2px solid var(--vert-officiel);
+  }
+  .month-title h3{font-size:1.6rem;color:var(--bleu-marine);text-transform:capitalize;margin:0}
+  .month-title span{color:var(--texte-doux);font-size:.85rem}
+  .sortie-row{
+    display:grid;grid-template-columns:80px 1fr auto;gap:1.2rem;align-items:center;
+    background:var(--blanc);padding:1.2rem 1.4rem;border-radius:12px;
+    box-shadow:var(--ombre);margin-bottom:.8rem;
+    border-left:4px solid var(--turquoise);
+    transition:transform .2s,box-shadow .2s;
+  }
+  .sortie-row:hover{transform:translateX(2px);box-shadow:var(--ombre-forte)}
+  .sortie-row.full{border-left-color:var(--vert-olive);opacity:.75}
+  .sortie-row.soon{border-left-color:var(--creme)}
+  .sortie-day{
+    text-align:center;background:var(--ecume);border-radius:10px;padding:.6rem .4rem;
+  }
+  .sortie-day .d{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--bleu-marine);display:block;line-height:1}
+  .sortie-day .wd{font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--texte-doux);margin-top:.2rem}
+  .sortie-info h4{font-size:1.15rem;margin-bottom:.3rem}
+  .sortie-meta{display:flex;gap:.9rem;color:var(--texte-doux);font-size:.8rem;flex-wrap:wrap}
+  .sortie-meta span{display:inline-flex;align-items:center;gap:.25rem}
+  .sortie-side{display:flex;flex-direction:column;align-items:flex-end;gap:.5rem}
+  .sortie-pill{
+    padding:.3rem .7rem;border-radius:99px;font-size:.72rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;
+  }
+  .pill-open{background:#dcf3df;color:#1a8a35}
+  .pill-full{background:#f0e7d6;color:#7a6a3a}
+  .pill-soon{background:#fbf3c8;color:#8a6f1a}
+  .sortie-fill{
+    font-size:.8rem;color:var(--texte-doux);font-weight:500;
+  }
+  .sortie-fill strong{color:var(--bleu-marine);font-family:'Cormorant Garamond',serif;font-size:1.05rem}
+  @media (max-width:640px){
+    .sortie-row{grid-template-columns:60px 1fr;gap:.8rem}
+    .sortie-side{grid-column:1/-1;flex-direction:row;justify-content:space-between;width:100%;align-items:center;padding-top:.5rem;border-top:1px dashed var(--bordure)}
+  }
+  .status-open{background:#d4f0d6;color:#1a6b3a}
+  .status-full{background:#f0e7d6;color:#7a6a3a}
+  .status-soon{background:#fbf3c8;color:#8a6f1a}
+
+  /* ===== INSCRIPTION ===== */
+  .role-picker{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem;
+  }
+  .role-card{
+    background:var(--blanc);padding:1.6rem;border-radius:14px;border:2px solid var(--bordure);
+    cursor:pointer;transition:all .25s;text-align:center;position:relative;overflow:hidden;
+  }
+  .role-card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:4px;
+    background:transparent;transition:background .25s;
+  }
+  .role-card[data-role=soignant]:hover,.role-card[data-role=soignant].selected{border-color:var(--vert-officiel)}
+  .role-card[data-role=soignant].selected::before{background:var(--vert-officiel)}
+  .role-card[data-role=skipper]:hover,.role-card[data-role=skipper].selected{border-color:var(--turquoise)}
+  .role-card[data-role=skipper].selected::before{background:var(--turquoise)}
+  .role-card[data-role=benevole]:hover,.role-card[data-role=benevole].selected{border-color:var(--vert-olive)}
+  .role-card[data-role=benevole].selected::before{background:var(--vert-olive)}
+  .role-card.selected{transform:translateY(-3px);box-shadow:var(--ombre-forte)}
+  .role-icon{font-size:2.2rem;margin-bottom:.6rem}
+  .role-card h4{margin-bottom:.3rem}
+  .role-card p{font-size:.85rem;color:var(--texte-doux)}
+
+  form.formulaire{
+    background:var(--blanc);border-radius:16px;box-shadow:var(--ombre);overflow:hidden;
+    border-top:6px solid var(--turquoise);transition:border-color .3s;
+  }
+  form.formulaire[data-role=soignant]{border-top-color:var(--vert-officiel)}
+  form.formulaire[data-role=skipper]{border-top-color:var(--turquoise)}
+  form.formulaire[data-role=benevole]{border-top-color:var(--vert-olive)}
+  .form-header{
+    padding:1.4rem 2rem;background:var(--ecume);
+    display:flex;align-items:center;gap:1rem;
+    border-bottom:1px solid var(--bordure);
+  }
+  .form-header-icon{
+    width:48px;height:48px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.6rem;background:var(--blanc);
+  }
+  .form-header h3{margin:0;font-size:1.25rem}
+  .form-header p{font-size:.85rem;color:var(--texte-doux);margin-top:.2rem}
+  .form-body{padding:2rem}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .form-group{margin-bottom:1.2rem}
+  label{display:block;font-size:.85rem;font-weight:500;color:var(--texte);margin-bottom:.4rem}
+  input,select,textarea{
+    width:100%;padding:.7rem .9rem;border-radius:10px;
+    border:1.5px solid var(--bordure);font-family:inherit;font-size:.95rem;
+    background:var(--blanc);transition:border-color .2s;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--bleu-marine-clair)}
+  textarea{resize:vertical;min-height:90px}
+  .checkbox-row{display:flex;align-items:flex-start;gap:.6rem;margin:1rem 0}
+  .checkbox-row input[type=checkbox]{width:auto;margin-top:.2rem}
+  .checkbox-row label{font-size:.85rem;color:var(--texte-doux);font-weight:400}
+
+  /* ===== CAP D'HONNEUR ===== */
+  .honneurs-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:2rem;
+  }
+  .honneur-card{
+    background:var(--blanc);border-radius:18px;padding:2rem 1.5rem 1.5rem;
+    text-align:center;position:relative;
+    border:2px solid var(--creme);
+    box-shadow:0 8px 28px rgba(28,45,79,0.12);
+    overflow:hidden;
+  }
+  .honneur-card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:6px;
+    background:linear-gradient(90deg,var(--creme),var(--vert-officiel),var(--creme));
+  }
+  .honneur-trophee{
+    font-size:2.4rem;margin-bottom:.4rem;display:block;
+    filter:drop-shadow(0 2px 6px rgba(252,242,189,0.6));
+  }
+  .honneur-categorie{
+    display:inline-block;padding:.25rem .8rem;
+    background:var(--bleu-marine);color:var(--creme);
+    border-radius:99px;font-size:.7rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:1.5px;margin-bottom:1rem;
+  }
+  .honneur-avatar{
+    width:90px;height:90px;border-radius:50%;margin:0 auto .8rem;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--blanc);
+    border:4px solid var(--creme);
+    box-shadow:0 4px 14px rgba(28,45,79,0.2);
+  }
+  .honneur-nom{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--bleu-marine);margin-bottom:.2rem}
+  .honneur-poste{font-size:.85rem;color:var(--texte-doux);margin-bottom:1rem}
+  .honneur-score{
+    background:linear-gradient(135deg,var(--vert-officiel),var(--vert-officiel-fonce));
+    color:var(--blanc);padding:.8rem;border-radius:12px;
+    font-family:'Cormorant Garamond',serif;
+  }
+  .honneur-score .gros{font-size:2.2rem;font-weight:700;line-height:1;display:block}
+  .honneur-score .label{font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;font-family:'Inter',sans-serif;margin-top:.3rem;opacity:.95}
+  .honneur-action{
+    margin-top:1rem;width:100%;padding:.7rem;border-radius:10px;
+    background:transparent;color:var(--bleu-marine);border:1.5px solid var(--bleu-marine);
+    font-weight:600;cursor:pointer;font-size:.85rem;
+    display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
+  }
+  .honneur-action:hover{background:var(--bleu-marine);color:#fff}
+
+  /* ===== PROFILS ===== */
+  .profils-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;
+  }
+  .profil-card{
+    background:var(--blanc);padding:1.6rem;border-radius:16px;
+    text-align:center;box-shadow:var(--ombre);transition:transform .2s,box-shadow .2s;
+    border-top:4px solid var(--bordure);
+  }
+  .profil-card:hover{transform:translateY(-3px);box-shadow:var(--ombre-forte)}
+  .profil-card[data-role=benevole]{border-top-color:var(--vert-olive)}
+  .profil-card[data-role=skipper]{border-top-color:var(--turquoise)}
+  .profil-card[data-role=soignant]{border-top-color:var(--vert-officiel)}
+  .profil-avatar{
+    width:80px;height:80px;border-radius:50%;margin:0 auto 1rem;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;color:var(--blanc);
+  }
+  .avatar-benevole{background:linear-gradient(135deg,var(--vert-olive),#7a9b6c)}
+  .avatar-skipper{background:linear-gradient(135deg,var(--bleu-marine),var(--turquoise))}
+  .avatar-soignant{background:linear-gradient(135deg,var(--vert-officiel),var(--vert-officiel-fonce))}
+  .profil-role{
+    display:inline-block;padding:.2rem .7rem;border-radius:99px;
+    font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+    margin-bottom:.5rem;
+  }
+  .role-benevole{background:#e2ead8;color:var(--vert-olive)}
+  .role-skipper{background:#d6edf2;color:#1c7989}
+  .role-soignant{background:#dcf3df;color:var(--vert-officiel-fonce)}
+  .profil-bio{color:var(--texte-doux);font-size:.85rem;margin-top:.5rem;min-height:50px}
+  .profil-card.champion{
+    background:linear-gradient(180deg,#fffbe8 0%,#ffffff 80%);
+    border-top-width:6px;
+  }
+  .profil-card.champion .profil-avatar{
+    border:3px solid var(--creme);
+    box-shadow:0 4px 14px rgba(252,242,189,0.7);
+  }
+  .badge-champion{
+    position:absolute;top:-8px;right:12px;
+    background:linear-gradient(135deg,var(--creme),#f5d96a);
+    color:var(--bleu-marine);padding:.3rem .7rem;border-radius:99px;
+    font-size:.7rem;font-weight:700;letter-spacing:.5px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.15);display:inline-flex;align-items:center;gap:.2rem;
+  }
+  .profil-card{position:relative}
+
+  /* ===== MEDAILLES ===== */
+  .medaille{
+    display:inline-flex;align-items:center;gap:.3rem;
+    padding:.2rem .55rem;border-radius:99px;font-size:.7rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.5px;
+    margin-top:.3rem;
+  }
+  .medaille-bronze{background:#f4e4d3;color:#8a5a2a;border:1px solid #d4a878}
+  .medaille-argent{background:#e6e8eb;color:#5a6470;border:1px solid #b6bcc5}
+  .medaille-or{background:linear-gradient(135deg,#fff4c8,#f5d96a);color:#7a5a10;border:1px solid #d4b545;box-shadow:0 2px 6px rgba(245,217,106,0.4)}
+  .legende-medailles{
+    background:var(--blanc);padding:1.2rem 1.5rem;border-radius:14px;
+    box-shadow:var(--ombre);margin-bottom:1.5rem;
+    display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:center;
+    font-size:.85rem;color:var(--texte-doux);
+  }
+  .legende-medailles strong{color:var(--bleu-marine);margin-right:.4rem}
+
+  /* ===== PAIEMENT HELLOASSO ===== */
+  .paiement-modal{max-width:500px;padding:0;overflow:hidden}
+  .paiement-header{
+    padding:1.5rem;background:linear-gradient(135deg,var(--bleu-marine),var(--bleu-marine-clair));
+    color:#fff;
+  }
+  .paiement-header h3{color:#fff;font-family:'Cormorant Garamond',serif;margin:0}
+  .paiement-header .close{float:right;background:none;color:#fff;font-size:1.4rem;cursor:pointer}
+  .paiement-recap{
+    padding:1rem 1.5rem;background:var(--ecume);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .paiement-recap .total{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--vert-officiel)}
+  .paiement-body{padding:1.5rem}
+  .paiement-helloasso{
+    background:#fff;border:1.5px solid var(--bordure);border-radius:12px;
+    padding:.8rem 1rem;margin-bottom:1.2rem;
+    display:flex;align-items:center;gap:.7rem;font-size:.85rem;
+  }
+  .paiement-helloasso .ha-logo{
+    width:34px;height:34px;border-radius:8px;
+    background:#02303a;color:#fff;font-weight:700;font-size:.7rem;
+    display:flex;align-items:center;justify-content:center;letter-spacing:-1px;
+  }
+  .paiement-info{
+    background:#f8fafa;padding:.8rem 1rem;border-radius:10px;
+    font-size:.78rem;color:var(--texte-doux);margin-bottom:1.2rem;
+    border-left:3px solid var(--vert-officiel);
+  }
+  .cb-row{display:grid;grid-template-columns:1fr 100px 80px;gap:.6rem;margin-bottom:.8rem}
+  .paiement-success{
+    text-align:center;padding:2rem 1.5rem;
+  }
+  .paiement-success .check{
+    width:70px;height:70px;border-radius:50%;
+    background:var(--vert-officiel);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:2.2rem;margin:0 auto 1rem;
+    box-shadow:0 4px 18px rgba(34,169,66,0.35);
+  }
+  .profil-stats{
+    display:flex;justify-content:center;gap:1.2rem;margin-top:.8rem;
+    padding-top:.8rem;border-top:1px solid var(--bordure);
+  }
+  .profil-stats div{font-size:.75rem;color:var(--texte-doux)}
+  .profil-stats div strong{display:block;font-size:1.1rem;color:var(--bleu-marine);font-family:'Cormorant Garamond',serif}
+  .profil-actions{display:flex;gap:.5rem;margin-top:1rem}
+  .profil-actions button{
+    flex:1;padding:.5rem .7rem;border-radius:8px;font-size:.8rem;font-weight:500;
+    background:var(--ecume);color:var(--bleu-marine);cursor:pointer;
+    transition:all .2s;border:1px solid transparent;
+    display:inline-flex;align-items:center;justify-content:center;gap:.3rem;
+  }
+  .profil-actions button:hover{background:var(--bleu-marine);color:#fff}
+  .profil-actions .relancer{background:#fff5d6;color:#8a6f1a}
+  .profil-actions .relancer:hover{background:var(--vert-officiel);color:#fff}
+
+  /* ===== CHAT MODAL ===== */
+  .chat-modal{max-width:520px;height:600px;display:flex;flex-direction:column;padding:0}
+  .chat-header{
+    padding:1.2rem 1.5rem;display:flex;align-items:center;gap:.8rem;
+    background:var(--bleu-marine);color:#fff;border-radius:18px 18px 0 0;
+  }
+  .chat-header .profil-avatar{margin:0;width:44px;height:44px;font-size:1.1rem}
+  .chat-header h4{color:#fff;font-family:'Inter',sans-serif;font-size:1rem;margin:0}
+  .chat-header span{font-size:.8rem;color:rgba(255,255,255,0.7)}
+  .chat-header .close{margin-left:auto;background:none;color:#fff;font-size:1.4rem;cursor:pointer}
+  .chat-body{flex:1;overflow-y:auto;padding:1.2rem;background:var(--ecume);display:flex;flex-direction:column;gap:.6rem}
+  .chat-msg{max-width:75%;padding:.7rem 1rem;border-radius:14px;font-size:.9rem;line-height:1.4}
+  .chat-msg.them{background:#fff;align-self:flex-start;border-bottom-left-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+  .chat-msg.me{background:var(--vert-officiel);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .chat-msg .time{font-size:.7rem;opacity:.6;display:block;margin-top:.2rem}
+  .chat-quick{
+    padding:.6rem 1rem;background:#fff;border-top:1px solid var(--bordure);
+    display:flex;gap:.4rem;flex-wrap:wrap;
+  }
+  .chat-quick button{
+    padding:.4rem .8rem;border-radius:99px;background:var(--ecume);color:var(--bleu-marine);
+    font-size:.78rem;cursor:pointer;border:1px solid var(--bordure);
+  }
+  .chat-quick button:hover{background:var(--bleu-marine);color:#fff;border-color:var(--bleu-marine)}
+  .chat-input{padding:1rem;background:#fff;border-radius:0 0 18px 18px;display:flex;gap:.6rem;border-top:1px solid var(--bordure)}
+  .chat-input input{flex:1;padding:.7rem 1rem;border-radius:99px;border:1px solid var(--bordure)}
+  .chat-input button{padding:.7rem 1.4rem;background:var(--vert-officiel);color:#fff;border-radius:99px;font-weight:600;cursor:pointer}
+
+  /* ===== ESPACE ===== */
+  .dashboard{display:grid;grid-template-columns:2fr 1fr;gap:1.5rem}
+  .panel{background:var(--blanc);padding:1.8rem;border-radius:16px;box-shadow:var(--ombre)}
+  .panel h3{margin-bottom:1rem}
+  .my-sortie{
+    display:flex;align-items:center;gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--bordure);
+  }
+  .my-sortie:last-child{border-bottom:none}
+  .my-sortie-date{
+    flex-shrink:0;width:54px;text-align:center;
+    background:var(--ecume);border-radius:8px;padding:.4rem;
+  }
+  .my-sortie-date .d{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;display:block;color:var(--bleu-profond);line-height:1}
+  .my-sortie-date .m{font-size:.65rem;text-transform:uppercase;color:var(--texte-doux);letter-spacing:1px}
+  .my-sortie-info{flex:1}
+  .my-sortie-info strong{display:block;color:var(--bleu-profond)}
+  .my-sortie-info span{font-size:.8rem;color:var(--texte-doux)}
+
+  /* ===== MODAL ===== */
+  .modal-bg{
+    display:none;position:fixed;inset:0;background:rgba(10,44,58,0.6);z-index:200;
+    backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem;
+  }
+  .modal-bg.show{display:flex}
+  .modal{
+    background:var(--blanc);border-radius:18px;max-width:500px;width:100%;
+    padding:2rem;max-height:90vh;overflow-y:auto;
+  }
+  .modal h3{margin-bottom:.5rem}
+  .modal .close{
+    float:right;background:none;font-size:1.4rem;color:var(--texte-doux);cursor:pointer;
+  }
+  .toast{
+    position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);
+    background:var(--bleu-profond);color:var(--blanc);padding:1rem 1.6rem;border-radius:12px;
+    box-shadow:var(--ombre-forte);font-weight:500;z-index:300;
+    opacity:0;transition:all .3s;
+  }
+  .toast.show{transform:translateX(-50%);opacity:1}
+
+  /* ===== FOOTER ===== */
+  footer{
+    background:var(--bleu-profond);color:rgba(255,255,255,0.85);
+    padding:3rem 1.5rem 1.5rem;margin-top:4rem;
+  }
+  .footer-grid{
+    max-width:1200px;margin:0 auto;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;
+  }
+  footer h4{color:var(--blanc);margin-bottom:.8rem;font-family:'Inter',sans-serif;font-size:.9rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+  footer a{color:rgba(255,255,255,0.7);display:block;padding:.2rem 0;font-size:.9rem}
+  footer a:hover{color:var(--vert-officiel)}
+  .footer-bottom{
+    max-width:1200px;margin:2rem auto 0;padding-top:1.5rem;
+    border-top:1px solid rgba(255,255,255,0.15);
+    text-align:center;font-size:.85rem;color:rgba(255,255,255,0.6);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:768px){
+    .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:var(--blanc);flex-direction:column;padding:1rem;border-bottom:1px solid var(--bordure)}
+    .nav-links.open{display:flex}
+    .nav-link{width:100%;text-align:left}
+    .burger{display:block}
+    .form-row{grid-template-columns:1fr}
+    .dashboard{grid-template-columns:1fr}
+    .hero{padding:3rem 1.5rem 5rem}
+    .stats{margin-top:-3rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="nav">
+    <div class="logo" onclick="showView('accueil')">
+      <div class="logo-mark">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="Logo Guérir en Mer 66">
+          <rect width="200" height="200" fill="#1c2d4f"/>
+          <!-- 4 arcs colorés du compas -->
+          <path d="M 100 30 A 70 70 0 0 0 30 100" fill="none" stroke="#5b7d4e" stroke-width="14" stroke-linecap="butt"/>
+          <path d="M 100 30 A 70 70 0 0 1 170 100" fill="none" stroke="#3eb1c8" stroke-width="14" stroke-linecap="butt"/>
+          <path d="M 170 100 A 70 70 0 0 1 100 170" fill="none" stroke="#5b7d4e" stroke-width="14" stroke-linecap="butt"/>
+          <path d="M 100 170 A 70 70 0 0 1 30 100" fill="none" stroke="#3eb1c8" stroke-width="14" stroke-linecap="butt"/>
+          <!-- Étoile à 4 branches -->
+          <path d="M 100 50 L 110 95 L 150 100 L 110 105 L 100 150 L 90 105 L 50 100 L 90 95 Z" fill="#fcf2bd"/>
+          <!-- Voilier au centre -->
+          <g transform="translate(100,100)">
+            <path d="M -2 -22 L -2 8 L 2 8 L 2 -22 Z" fill="#3eb1c8"/>
+            <path d="M 2 -22 L 18 6 L 2 6 Z" fill="#3eb1c8"/>
+            <path d="M -2 -18 L -14 6 L -2 6 Z" fill="#3eb1c8" opacity="0.85"/>
+            <path d="M -18 8 L 20 8 L 16 14 L -14 14 Z" fill="#3eb1c8"/>
+            <path d="M -22 18 Q -16 16 -10 18 T 2 18 T 14 18 T 22 18" stroke="#3eb1c8" stroke-width="1.5" fill="none"/>
+          </g>
+          <!-- Texte circulaire haut -->
+          <defs>
+            <path id="topcurve66" d="M 30 100 A 70 70 0 0 1 170 100" fill="none"/>
+            <path id="botcurve66" d="M 35 105 A 65 65 0 0 0 165 105" fill="none"/>
+          </defs>
+          <text fill="#ffffff" font-family="Cormorant Garamond, serif" font-size="13" letter-spacing="3" font-weight="500">
+            <textPath href="#topcurve66" startOffset="50%" text-anchor="middle">GUERIR EN MER</textPath>
+          </text>
+          <text fill="#ffffff" font-family="Cormorant Garamond, serif" font-size="13" letter-spacing="6" font-weight="500">
+            <textPath href="#botcurve66" startOffset="50%" text-anchor="middle">GEM66</textPath>
+          </text>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <strong>Guérir en Mer</strong>
+        <span>Antenne 66 · Saint-Cyprien</span>
+      </div>
+    </div>
+    <button class="burger" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <nav class="nav-links">
+      <button class="nav-link active" data-view="accueil" onclick="showView('accueil')">Accueil</button>
+      <button class="nav-link" data-view="sorties" onclick="showView('sorties')">Sorties</button>
+      <button class="nav-link" data-view="inscription" onclick="showView('inscription')">Inscription</button>
+      <button class="nav-link" data-view="profils" onclick="showView('profils')">Équipage</button>
+      <button class="nav-link" data-view="espace" onclick="showView('espace')">Mon espace</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ ACCUEIL ============ -->
+<section id="view-accueil" class="view active">
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Le souffle marin pour les <em>soignants en burn-out</em></h1>
+      <p class="hero-sub">Une fois par mois, nos bénévoles, skippers et soignants se retrouvent au port de Saint-Cyprien pour une journée en mer. Inscrivez-vous, gérez vos sorties, retrouvez l'équipage — tout depuis l'application de l'antenne 66.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="showView('sorties')">Voir les prochaines sorties →</button>
+        <button class="btn btn-ghost" onclick="showView('inscription')">Rejoindre l'équipage</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stats">
+      <div class="stat"><div class="stat-num" id="stat-sorties">12</div><div class="stat-label">Sorties prévues en 2026</div></div>
+      <div class="stat"><div class="stat-num" id="stat-soignants">48</div><div class="stat-label">Soignants accompagnés</div></div>
+      <div class="stat"><div class="stat-num" id="stat-skippers">9</div><div class="stat-label">Skippers bénévoles</div></div>
+      <div class="stat"><div class="stat-num">7</div><div class="stat-label">Bénévoles à terre</div></div>
+    </div>
+
+    <div style="margin-top:4rem">
+      <span class="section-tag">Notre mission</span>
+      <h2>La mer comme espace de respiration</h2>
+      <p class="section-intro">Le burn-out touche un soignant sur deux. À l'antenne 66, nous offrons une parenthèse en mer, gratuite et confidentielle, pour aider à reprendre souffle et lien.</p>
+
+      <div class="mission">
+        <div class="mission-card">
+          <div class="mission-icon">⚓</div>
+          <h3>Sorties mensuelles</h3>
+          <p>Une journée en voilier au départ de Saint-Cyprien, avec un skipper bénévole expérimenté et un petit groupe de soignants.</p>
+        </div>
+        <div class="mission-card">
+          <div class="mission-icon">🌊</div>
+          <h3>Cadre confidentiel</h3>
+          <p>Pas de thérapie imposée, pas de jugement. Juste l'air du large, l'écoute entre pairs et le rythme des vagues.</p>
+        </div>
+        <div class="mission-card">
+          <div class="mission-icon">🤝</div>
+          <h3>Réseau bénévole</h3>
+          <p>L'équipage à terre coordonne les inscriptions à tour de rôle. Cette appli simplifie cette organisation pour tout le monde.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:4rem">
+      <span class="section-tag">🏆 Cap d'honneur</span>
+      <h2>Les capitaines du mois</h2>
+      <p class="section-intro">Chaque mois, l'antenne 66 met à l'honneur celles et ceux qui font vivre l'aventure : le skipper aux plus de traversées, le·la soignant·e le·la plus assidu·e en mer, et le·la bénévole qui coordonne le plus d'événements.</p>
+      <div class="honneurs-grid" id="honneurs-grid"></div>
+    </div>
+
+    <div style="margin-top:4rem;background:linear-gradient(135deg,var(--bleu-profond),var(--bleu-marine-clair));padding:3rem;border-radius:20px;color:#fff;text-align:center">
+      <h2 style="color:#fff">Prêt·e à embarquer ?</h2>
+      <p style="max-width:560px;margin:.5rem auto 1.5rem;color:rgba(255,255,255,0.9)">Que vous soyez soignant·e en quête de répit, skipper qui veut donner de son temps, ou bénévole prêt·e à coordonner — il y a une place pour vous.</p>
+      <button class="btn btn-primary" onclick="showView('inscription')">Je m'inscris</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SORTIES ============ -->
+<section id="view-sorties" class="view">
+  <div class="container">
+    <span class="section-tag">Calendrier</span>
+    <h2>Prochaines sorties en mer</h2>
+    <p class="section-intro">Au départ du port de Saint-Cyprien (66). Les sorties durent environ 6 heures, repas partagé inclus. Inscription gratuite pour les soignants.</p>
+
+    <div class="filters">
+      <button class="chip active" data-filter="all" onclick="filterSorties('all',this)">Toutes</button>
+      <button class="chip" data-filter="open" onclick="filterSorties('open',this)">Places disponibles</button>
+      <button class="chip" data-filter="full" onclick="filterSorties('full',this)">Complètes</button>
+      <button class="chip" data-filter="soon" onclick="filterSorties('soon',this)">Bientôt ouverte</button>
+    </div>
+
+    <div class="sorties-grid" id="sorties-grid"></div>
+  </div>
+</section>
+
+<!-- ============ INSCRIPTION ============ -->
+<section id="view-inscription" class="view">
+  <div class="container">
+    <span class="section-tag">Rejoindre</span>
+    <h2>Inscription à l'équipage</h2>
+    <p class="section-intro">Choisissez votre rôle, remplissez le formulaire, et un bénévole de coordination vous recontacte sous 48 h. Vos données restent confidentielles et ne sont partagées qu'avec l'équipe coordination du 66.</p>
+
+    <div class="role-picker">
+      <div class="role-card selected" data-role="soignant" onclick="selectRole('soignant',this)">
+        <div class="role-icon">🩺</div>
+        <h4>Je suis soignant·e</h4>
+        <p>Je souhaite participer à une sortie pour souffler</p>
+      </div>
+      <div class="role-card" data-role="skipper" onclick="selectRole('skipper',this)">
+        <div class="role-icon">⛵</div>
+        <h4>Je suis skipper</h4>
+        <p>Je propose mon bateau et mes compétences</p>
+      </div>
+      <div class="role-card" data-role="benevole" onclick="selectRole('benevole',this)">
+        <div class="role-icon">🤝</div>
+        <h4>Je suis bénévole</h4>
+        <p>Je veux aider à la coordination à terre</p>
+      </div>
+    </div>
+
+    <form class="formulaire" data-role="soignant" id="form-inscription" onsubmit="submitInscription(event)">
+      <div class="form-header">
+        <div class="form-header-icon" id="form-icon">🩺</div>
+        <div>
+          <h3 id="form-title">Inscription Soignant·e</h3>
+          <p id="form-subtitle">Pour participer à une sortie en mer — gratuit et confidentiel</p>
+        </div>
+      </div>
+      <div class="form-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Prénom *</label>
+            <input type="text" name="prenom" required>
+          </div>
+          <div class="form-group">
+            <label>Nom *</label>
+            <input type="text" name="nom" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label>Téléphone *</label>
+            <input type="tel" name="tel" required>
+          </div>
+        </div>
+
+        <div id="champs-soignant" class="champs-role">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Profession *</label>
+              <select name="profession" required>
+                <option value="">— Choisir —</option>
+                <option>Infirmier·e</option><option>Aide-soignant·e</option>
+                <option>Médecin</option><option>Sage-femme</option>
+                <option>Kiné</option><option>Psychologue</option>
+                <option>Auxiliaire de vie</option><option>Autre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Établissement</label>
+              <input type="text" name="etablissement" placeholder="Ex : CH Perpignan">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Niveau de fatigue ressenti (optionnel)</label>
+            <select name="fatigue">
+              <option value="">— Préférer ne pas répondre —</option>
+              <option>Léger — j'ai juste besoin de respirer</option>
+              <option>Modéré — fatigue persistante</option>
+              <option>Important — proche du burn-out</option>
+              <option>En arrêt maladie / burn-out déclaré</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Quelques mots sur votre situation (optionnel)</label>
+            <textarea name="situation" placeholder="Ce que vous souhaitez partager — strictement confidentiel"></textarea>
+          </div>
+        </div>
+
+        <div id="champs-skipper" class="champs-role" style="display:none">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nom du bateau *</label>
+              <input type="text" name="bateau" placeholder="Ex : Espérance">
+            </div>
+            <div class="form-group">
+              <label>Type de bateau</label>
+              <select name="type-bateau">
+                <option>Voilier monocoque</option><option>Catamaran</option>
+                <option>Bateau moteur</option><option>Autre</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Longueur (en pieds)</label>
+              <input type="number" name="taille" min="20" max="60">
+            </div>
+            <div class="form-group">
+              <label>Capacité passagers *</label>
+              <input type="number" name="capacite" min="1" max="20" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Permis / certifications *</label>
+            <input type="text" name="permis" placeholder="Ex : Hauturier, Capitaine 200" required>
+          </div>
+          <div class="form-group">
+            <label>Disponibilités habituelles</label>
+            <textarea name="dispos" placeholder="Ex : 2 weekends par mois, hors juillet-août..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Port d'attache</label>
+            <input type="text" name="port-attache" value="Saint-Cyprien" placeholder="Ex : Saint-Cyprien, Canet, Argelès...">
+          </div>
+        </div>
+
+        <div id="champs-benevole" class="champs-role" style="display:none">
+          <div class="form-group">
+            <label>Comment souhaitez-vous aider ? *</label>
+            <select name="aide" required>
+              <option value="">— Choisir un domaine —</option>
+              <option>Coordination des sorties</option>
+              <option>Accueil sur le port</option>
+              <option>Logistique repas</option>
+              <option>Communication & réseaux sociaux</option>
+              <option>Création des flyers</option>
+              <option>Démarchage hôpitaux/cliniques</option>
+              <option>Plusieurs missions</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Avez-vous une expérience associative ?</label>
+            <textarea name="exp" placeholder="Optionnel — domaines, années, postes..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Disponibilités *</label>
+            <input type="text" name="dispos-bene" placeholder="Ex : 2 demi-journées par mois, soirs en semaine" required>
+          </div>
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="rgpd" required>
+          <label for="rgpd">J'accepte que mes données soient utilisées uniquement par Guérir en Mer 66 pour la coordination de l'association (RGPD). Je peux demander leur suppression à tout moment via guerirenmer66@gmail.com.</label>
+        </div>
+
+        <button type="submit" class="btn btn-secondary" style="width:100%" id="form-submit">Envoyer ma candidature soignant·e</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============ PROFILS ============ -->
+<section id="view-profils" class="view">
+  <div class="container">
+    <span class="section-tag">L'équipage</span>
+    <h2>Celles et ceux qui font vivre l'antenne 66</h2>
+    <p class="section-intro">Bénévoles à terre, skippers en mer, soignants accompagnés — chaque profil est essentiel à l'aventure.</p>
+
+    <div class="filters">
+      <button class="chip active" data-pfilter="all" onclick="filterProfils('all',this)">Tous</button>
+      <button class="chip" data-pfilter="benevole" onclick="filterProfils('benevole',this)">Bénévoles</button>
+      <button class="chip" data-pfilter="skipper" onclick="filterProfils('skipper',this)">Skippers</button>
+      <button class="chip" data-pfilter="soignant" onclick="filterProfils('soignant',this)">Soignants</button>
+    </div>
+
+    <div class="legende-medailles">
+      <span><strong>Médailles</strong>de l'engagement :</span>
+      <span class="medaille medaille-bronze">🥉 Bronze</span><span>3 sorties</span>
+      <span class="medaille medaille-argent">🥈 Argent</span><span>10 sorties</span>
+      <span class="medaille medaille-or">🥇 Or</span><span>20 sorties et +</span>
+    </div>
+
+    <div class="profils-grid" id="profils-grid"></div>
+  </div>
+</section>
+
+<!-- ============ MON ESPACE ============ -->
+<section id="view-espace" class="view">
+  <div class="container">
+    <span class="section-tag">Mon espace</span>
+    <h2>Bonjour Estelle 👋</h2>
+    <p class="section-intro">Vous êtes bénévole coordinatrice. Voici l'état des inscriptions et vos sorties à venir.</p>
+
+    <div class="dashboard">
+      <div class="panel">
+        <h3>Mes prochaines sorties</h3>
+        <div id="my-sorties"></div>
+      </div>
+      <div class="panel">
+        <h3>Tâches coordination</h3>
+        <div style="display:flex;flex-direction:column;gap:.7rem">
+          <div style="display:flex;gap:.6rem;align-items:center"><input type="checkbox" checked> <span style="text-decoration:line-through;color:var(--texte-doux)">Confirmer skipper du 14 mai</span></div>
+          <div style="display:flex;gap:.6rem;align-items:center"><input type="checkbox"> <span>Relancer 2 soignants en attente</span></div>
+          <div style="display:flex;gap:.6rem;align-items:center"><input type="checkbox"> <span>Imprimer les flyers pour le forum asso</span></div>
+          <div style="display:flex;gap:.6rem;align-items:center"><input type="checkbox"> <span>Préparer le post Instagram du 28 mai</span></div>
+        </div>
+        <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--bordure)">
+          <h4 style="margin-bottom:.5rem">💬 Messages récents</h4>
+          <p style="font-size:.85rem;color:var(--texte-doux);margin-bottom:.8rem">Discutez et relancez directement les participants depuis leur profil.</p>
+          <button class="btn btn-outline" style="width:100%;font-size:.85rem;padding:.5rem" onclick="showView('profils')">Aller à l'équipage</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:1.5rem">
+      <h3>Vue d'ensemble — antenne 66</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-top:1rem">
+        <div style="text-align:center"><div class="stat-num" style="font-size:2rem">3</div><div class="stat-label">Sorties ce trimestre</div></div>
+        <div style="text-align:center"><div class="stat-num" style="font-size:2rem">17</div><div class="stat-label">Inscriptions en cours</div></div>
+        <div style="text-align:center"><div class="stat-num" style="font-size:2rem">4</div><div class="stat-label">Skippers actifs</div></div>
+        <div style="text-align:center"><div class="stat-num" style="font-size:2rem">92%</div><div class="stat-label">Taux de remplissage</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MODAL DETAIL SORTIE ============ -->
+<div class="modal-bg" id="modal-sortie" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-sortie-content"></div>
+</div>
+
+<!-- ============ CHAT MODAL ============ -->
+<div class="modal-bg" id="chat-modal" onclick="if(event.target===this)closeChat()">
+  <div class="modal chat-modal" id="chat-content"></div>
+</div>
+
+<!-- ============ PAIEMENT HELLOASSO ============ -->
+<div class="modal-bg" id="paiement-modal" onclick="if(event.target===this)closePaiement()">
+  <div class="modal paiement-modal" id="paiement-content"></div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast"></div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
+        <!-- Logo national : monogramme GM avec cercle vert -->
+        <svg viewBox="0 0 80 80" width="56" height="56" aria-label="Guérir en Mer">
+          <defs>
+            <path id="circletext" d="M 40 40 m -32 0 a 32 32 0 1 1 64 0 a 32 32 0 1 1 -64 0" fill="none"/>
+          </defs>
+          <text fill="#22a942" font-family="Inter,sans-serif" font-size="6.5" letter-spacing="1.2" font-weight="500">
+            <textPath href="#circletext" startOffset="0%">GUÉRIR EN MER · GUÉRIR EN MER · GUÉRIR EN MER ·</textPath>
+          </text>
+          <circle cx="40" cy="40" r="22" fill="none" stroke="#22a942" stroke-width="2"/>
+          <text x="40" y="48" text-anchor="middle" fill="#22a942" font-family="Cormorant Garamond,serif" font-size="22" font-weight="700">GM</text>
+        </svg>
+        <div style="line-height:1.1">
+          <strong style="color:#fff;font-family:'Inter',sans-serif;font-size:1.1rem;letter-spacing:3px;font-weight:300">GUÉRIR EN MER</strong>
+          <div style="color:var(--vert-officiel);font-size:.7rem;letter-spacing:1.5px;margin-top:.2rem">ANTENNE 66 · SAINT-CYPRIEN</div>
+        </div>
+      </div>
+      <p style="font-size:.9rem">L'air du large pour celles et ceux qui prennent soin des autres.</p>
+      <p style="font-size:.75rem;color:var(--vert-officiel);margin-top:.6rem;letter-spacing:1px">42°62'20.40" NORD · 3°03'86.75" EST</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <a onclick="showView('accueil')">Accueil</a>
+      <a onclick="showView('sorties')">Sorties</a>
+      <a onclick="showView('inscription')">Inscription</a>
+      <a onclick="showView('profils')">Équipage</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a>Port de Saint-Cyprien (66)</a>
+      <a href="mailto:guerirenmer66@gmail.com">guerirenmer66@gmail.com</a>
+      <a>Réseau national : guerirenmer.com</a>
+    </div>
+    <div>
+      <h4>Suivez-nous</h4>
+      <a>Instagram @guerirenmer66</a>
+      <a>Facebook Guérir en Mer 66</a>
+      <a>Newsletter mensuelle</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Guérir en Mer 66 — Association loi 1901 · Maquette V2</div>
+</footer>
+
+<script>
+  // ============ DONNÉES ============
+  const sorties = [
+    {id:1,jour:14,mois:'mai',moisNum:5,annee:2026,titre:'Cap sur les Albères',port:'Saint-Cyprien',duree:'9h-16h',skipper:'Marc Doutreleau',places:6,inscrits:6,statut:'full',theme:1,desc:'Navigation côtière vers la côte Vermeille avec déjeuner à bord. Météo douce annoncée.'},
+    {id:2,jour:28,mois:'mai',moisNum:5,annee:2026,titre:'Balade au large de Canet',port:'Saint-Cyprien',duree:'10h-17h',skipper:'Sylvie Marchetti',places:8,inscrits:5,statut:'open',theme:2,desc:'Sortie en grand large pour profiter de la pleine mer. Possibilité de barre pour les volontaires.'},
+    {id:3,jour:11,mois:'juin',moisNum:6,annee:2026,titre:'Coucher de soleil aux Bouillouses',port:'Saint-Cyprien',duree:'15h-21h',skipper:'Jean-Luc Vidal',places:6,inscrits:3,statut:'open',theme:3,desc:'Sortie en fin de journée avec apéritif partagé au mouillage. Retour au crépuscule.'},
+    {id:4,jour:25,mois:'juin',moisNum:6,annee:2026,titre:'Journée Tech Soignants',port:'Saint-Cyprien',duree:'9h-17h',skipper:'Marc Doutreleau',places:8,inscrits:2,statut:'soon',theme:4,desc:'Sortie spéciale pour le personnel des soins techniques (réa, urgences, blocs). Inscriptions ouvertes le 12 mai.'},
+    {id:5,jour:9,mois:'juillet',moisNum:7,annee:2026,titre:'Sortie pleine lune',port:'Saint-Cyprien',duree:'17h-23h',skipper:'Sylvie Marchetti',places:6,inscrits:4,statut:'open',theme:5,desc:'Navigation au coucher du soleil et retour sous la pleine lune. Magique.'},
+    {id:6,jour:23,mois:'juillet',moisNum:7,annee:2026,titre:'Cap sur Collioure',port:'Saint-Cyprien',duree:'8h-18h',skipper:'Antoine Berger',places:8,inscrits:6,statut:'open',theme:6,desc:'Longue navigation vers Collioure avec escale et baignade. Pique-nique à bord.'},
+  ];
+
+  const profils = [
+    {nom:'Estelle B.',role:'benevole',poste:'Coordinatrice 66',bio:'Infirmière à l\'hôpital de Perpignan, 10 ans d\'expérience. Bénévole depuis 2024.',sorties:8,initiales:'EB',statut:'Actif'},
+    {nom:'Marc Doutreleau',role:'skipper',poste:'Skipper hauturier',bio:'Voilier "Espérance" — 30 pieds. Disponible 2 weekends/mois.',sorties:14,initiales:'MD',statut:'Confirmé'},
+    {nom:'Sylvie Marchetti',role:'skipper',poste:'Capitaine 200',bio:'Voilier "Aïoli" — 35 pieds. Ancienne kiné, sensible au burn-out soignant.',sorties:11,initiales:'SM',statut:'Confirmé'},
+    {nom:'Claire Fontaine',role:'soignant',poste:'Infirmière réa',bio:'CH Perpignan. A participé à 3 sorties en 2025.',sorties:3,initiales:'CF',statut:'Inscrite'},
+    {nom:'Jean-Luc Vidal',role:'skipper',poste:'Permis hauturier',bio:'Voilier "Tramontane" — 28 pieds. Retraité de la gendarmerie maritime.',sorties:9,initiales:'JV',statut:'En attente'},
+    {nom:'Léa Sanchez',role:'soignant',poste:'Sage-femme',bio:'Clinique Saint-Pierre. Première sortie en juin 2026.',sorties:0,initiales:'LS',statut:'Nouvelle'},
+    {nom:'Hugo Mari',role:'benevole',poste:'Communication & flyers',bio:'Étudiant en école de design, gère les visuels de l\'antenne.',sorties:5,initiales:'HM',statut:'Actif'},
+    {nom:'Antoine Berger',role:'skipper',poste:'Skipper bénévole',bio:'Voilier "Mistral" — 32 pieds. Ancien aide-soignant reconverti.',sorties:6,initiales:'AB',statut:'Confirmé'},
+    {nom:'Nadia Rouvier',role:'soignant',poste:'Aide-soignante',bio:'EHPAD Saint-Estève. A trouvé "un avant et un après" après sa sortie.',sorties:2,initiales:'NR',statut:'Inscrite'},
+    {nom:'Patricia Lemoine',role:'benevole',poste:'Logistique repas',bio:'Bénévole depuis 2023, prépare les paniers-repas pour chaque sortie.',sorties:12,initiales:'PL',statut:'Actif'},
+    {nom:'Karim Boudjelal',role:'soignant',poste:'Médecin urgentiste',bio:'CH Perpignan. Intéressé par devenir skipper bénévole.',sorties:1,initiales:'KB',statut:'À relancer'},
+    {nom:'Camille Roux',role:'soignant',poste:'Psychologue',bio:'Cabinet libéral. Aide informellement entre soignants à bord.',sorties:4,initiales:'CR',statut:'Inscrite'},
+  ];
+
+  // Sorties auxquelles Estelle est inscrite (coordinatrice)
+  const mesSorties = [1,2,3,4];
+
+  let filtreSortie='all', filtreProfil='all', roleSelectionne='soignant';
+
+  // ============ NAVIGATION ============
+  function showView(name){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+name).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(b=>b.classList.toggle('active',b.dataset.view===name));
+    document.querySelector('.nav-links').classList.remove('open');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // ============ SORTIES — vue mensuelle simplifiée ============
+  const joursSemaine=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  function renderSorties(){
+    const grid=document.getElementById('sorties-grid');
+    const data=sorties.filter(s=>filtreSortie==='all'||s.statut===filtreSortie);
+    if(!data.length){grid.innerHTML='<p style="color:var(--texte-doux);text-align:center;padding:2rem">Aucune sortie ne correspond à ce filtre.</p>';return}
+    // Grouper par mois
+    const parMois={};
+    data.forEach(s=>{
+      const cle=`${s.annee}-${String(s.moisNum).padStart(2,'0')}`;
+      if(!parMois[cle])parMois[cle]={label:s.mois+' '+s.annee,items:[]};
+      parMois[cle].items.push(s);
+    });
+    const statusLabel={open:'Places dispo',full:'Complète',soon:'Bientôt'};
+    const statusPill={open:'pill-open',full:'pill-full',soon:'pill-soon'};
+    grid.innerHTML=Object.values(parMois).map(mois=>`
+      <div class="month-block">
+        <div class="month-title"><h3>${mois.label}</h3><span>${mois.items.length} sortie${mois.items.length>1?'s':''}</span></div>
+        ${mois.items.map(s=>{
+          const date=new Date(s.annee,s.moisNum-1,s.jour);
+          const wd=joursSemaine[date.getDay()];
+          return `<div class="sortie-row ${s.statut==='full'?'full':s.statut==='soon'?'soon':''}" onclick="showSortieDetail(${s.id})" style="cursor:pointer">
+            <div class="sortie-day"><span class="d">${s.jour}</span><span class="wd">${wd}</span></div>
+            <div class="sortie-info">
+              <h4>${s.titre}</h4>
+              <div class="sortie-meta">
+                <span>⏰ ${s.duree}</span><span>⛵ ${s.skipper}</span><span>📍 ${s.port}</span>
+              </div>
+            </div>
+            <div class="sortie-side">
+              <span class="sortie-pill ${statusPill[s.statut]}">${statusLabel[s.statut]}</span>
+              <span class="sortie-fill"><strong>${s.inscrits}</strong>/${s.places} soignants</span>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    `).join('');
+  }
+  function filterSorties(f,btn){
+    filtreSortie=f;
+    document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b===btn));
+    renderSorties();
+  }
+  function showSortieDetail(id){
+    const s=sorties.find(x=>x.id===id);
+    document.getElementById('modal-sortie-content').innerHTML=`
+      <button class="close" onclick="closeModal()">×</button>
+      <span class="section-tag">${s.jour} ${s.mois} ${s.annee}</span>
+      <h3 style="margin-top:.5rem">${s.titre}</h3>
+      <p style="color:var(--texte-doux);margin:1rem 0">${s.desc}</p>
+      <div style="background:var(--ecume);padding:1rem;border-radius:10px;margin:1rem 0">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;font-size:.9rem">
+          <div><strong>Port :</strong><br>${s.port}</div>
+          <div><strong>Horaires :</strong><br>${s.duree}</div>
+          <div><strong>Skipper :</strong><br>${s.skipper}</div>
+          <div><strong>Places :</strong><br>${s.inscrits}/${s.places} prises</div>
+        </div>
+      </div>
+      <h4 style="margin-bottom:.5rem">À prévoir</h4>
+      <ul style="color:var(--texte-doux);font-size:.9rem;padding-left:1.2rem;margin-bottom:1rem">
+        <li>Coupe-vent et chaussures non-marquantes</li><li>Crème solaire, casquette, lunettes</li>
+        <li>Une gourde — repas inclus à bord</li><li>Sac de change (selon mer)</li>
+      </ul>
+      <div style="background:var(--ecume);padding:.8rem 1rem;border-radius:10px;margin-bottom:1rem;font-size:.85rem;display:flex;justify-content:space-between;align-items:center">
+        <span><strong>Cotisation :</strong> 5 € via HelloAsso<br><span style="color:var(--texte-doux);font-size:.8rem">Assurance + repas inclus</span></span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--vert-officiel)">5 €</span>
+      </div>
+      <button class="btn btn-secondary" style="width:100%" onclick="inscrireSortie(${s.id});closeModal()">${s.statut==='full'?'Sortie complète':'Réserver ma place — 5 €'}</button>`;
+    document.getElementById('modal-sortie').classList.add('show');
+  }
+  function closeModal(){document.getElementById('modal-sortie').classList.remove('show')}
+  function inscrireSortie(id){
+    const s=sorties.find(x=>x.id===id);
+    if(s.statut==='full'){toast('Cette sortie est complète — inscrivez-vous à une autre date');return}
+    if(s.statut==='soon'){toast('Inscriptions pas encore ouvertes pour cette sortie');return}
+    ouvrirPaiement(s);
+  }
+
+  // ============ PAIEMENT HELLOASSO ============
+  function ouvrirPaiement(s){
+    document.getElementById('paiement-content').innerHTML=`
+      <div class="paiement-header">
+        <button class="close" onclick="closePaiement()">×</button>
+        <h3>Réserver ma place</h3>
+        <p style="color:rgba(255,255,255,0.85);font-size:.85rem;margin-top:.3rem">${s.titre} — ${s.jour} ${s.mois} ${s.annee}</p>
+      </div>
+      <div class="paiement-recap">
+        <div>
+          <div style="font-size:.8rem;color:var(--texte-doux)">Cotisation sortie en mer</div>
+          <div style="font-size:.9rem;font-weight:500">1 place soignant·e</div>
+        </div>
+        <div class="total">5,00 €</div>
+      </div>
+      <div class="paiement-body">
+        <div class="paiement-helloasso">
+          <div class="ha-logo">HA</div>
+          <div>
+            <strong>Paiement sécurisé via HelloAsso</strong><br>
+            <span style="color:var(--texte-doux)">Sans frais pour l'association</span>
+          </div>
+        </div>
+        <form onsubmit="validerPaiement(event,${s.id})">
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" required placeholder="vous@exemple.fr">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Prénom *</label>
+              <input type="text" required>
+            </div>
+            <div class="form-group">
+              <label>Nom *</label>
+              <input type="text" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Numéro de carte *</label>
+            <input type="text" required placeholder="1234 5678 9012 3456" maxlength="19">
+          </div>
+          <div class="cb-row">
+            <div class="form-group" style="margin:0">
+              <label>Titulaire</label>
+              <input type="text" required>
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>Expiration</label>
+              <input type="text" required placeholder="MM/AA" maxlength="5">
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>CVC</label>
+              <input type="text" required placeholder="123" maxlength="3">
+            </div>
+          </div>
+          <div class="paiement-info">
+            ℹ️ Cette cotisation de 5 € est obligatoire pour réserver votre place. Elle couvre l'assurance, le repas du midi et le matériel à bord. Paiement géré par HelloAsso (plateforme officielle des associations françaises).
+          </div>
+          <button type="submit" class="btn btn-secondary" style="width:100%">Payer 5,00 € et confirmer ma place</button>
+        </form>
+      </div>`;
+    document.getElementById('paiement-modal').classList.add('show');
+  }
+
+  function validerPaiement(e,id){
+    e.preventDefault();
+    // Simuler le paiement
+    document.getElementById('paiement-content').innerHTML=`
+      <div class="paiement-success">
+        <div class="check">✓</div>
+        <h3 style="margin-bottom:.5rem">Paiement réussi !</h3>
+        <p style="color:var(--texte-doux);margin-bottom:1.2rem">Votre place est réservée. Un mail de confirmation vous a été envoyé via HelloAsso.</p>
+        <div style="background:var(--ecume);padding:1rem;border-radius:10px;margin-bottom:1.5rem;text-align:left;font-size:.85rem">
+          <strong>📧 Reçu envoyé</strong><br>
+          <strong>📅 Sortie ajoutée à votre espace</strong><br>
+          <strong>⛵ RDV au port de Saint-Cyprien</strong>
+        </div>
+        <button class="btn btn-secondary" style="width:100%" onclick="closePaiement()">Fermer</button>
+      </div>`;
+    // Mettre à jour la sortie
+    const s=sorties.find(x=>x.id===id);
+    s.inscrits++;
+    if(s.inscrits>=s.places)s.statut='full';
+    renderSorties();
+    setTimeout(()=>{toast('🎉 Place confirmée — RDV pour : '+s.titre)},800);
+  }
+
+  function closePaiement(){
+    document.getElementById('paiement-modal').classList.remove('show');
+  }
+
+  // ============ MEDAILLES ============
+  function getMedaille(n){
+    if(n>=20)return {classe:'medaille-or',label:'🥇 Or',rang:'or'};
+    if(n>=10)return {classe:'medaille-argent',label:'🥈 Argent',rang:'argent'};
+    if(n>=3)return {classe:'medaille-bronze',label:'🥉 Bronze',rang:'bronze'};
+    return null;
+  }
+
+  // ============ CHAMPIONS ============
+  // Label de la métrique principale par rôle
+  const labelStat={skipper:'traversées',soignant:'sorties',benevole:'événements'};
+  function getChampions(){
+    const champ={};
+    ['skipper','soignant','benevole'].forEach(r=>{
+      const liste=profils.filter(p=>p.role===r);
+      const idx=profils.indexOf(liste.reduce((a,b)=>a.sorties>=b.sorties?a:b));
+      champ[r]=idx;
+    });
+    return champ;
+  }
+  const champions=getChampions();
+
+  function renderHonneurs(){
+    const wrap=document.getElementById('honneurs-grid');
+    const cats=[
+      {role:'skipper',titre:'Capitaine du mois',sub:'Le skipper aux plus de traversées',emoji:'⛵'},
+      {role:'soignant',titre:'Soignant·e du mois',sub:'Le·la soignant·e le·la plus assidu·e',emoji:'🩺'},
+      {role:'benevole',titre:'Bénévole du mois',sub:'Le·la pilier·e de la coordination',emoji:'🤝'},
+    ];
+    wrap.innerHTML=cats.map(c=>{
+      const i=champions[c.role];
+      const p=profils[i];
+      return `<div class="honneur-card">
+        <span class="honneur-trophee">🏆</span>
+        <span class="honneur-categorie">${c.titre}</span>
+        <div class="honneur-avatar avatar-${p.role}">${p.initiales}</div>
+        <div class="honneur-nom">${p.nom}</div>
+        <div class="honneur-poste">${c.emoji} ${p.poste}</div>
+        <div class="honneur-score">
+          <span class="gros">${p.sorties}</span>
+          <span class="label">${labelStat[p.role]} en 2026</span>
+        </div>
+        <button class="honneur-action" onclick="openChat(${i})">💬 Féliciter ${p.nom.split(' ')[0]}</button>
+      </div>`;
+    }).join('');
+  }
+
+  // ============ PROFILS ============
+  function renderProfils(){
+    const grid=document.getElementById('profils-grid');
+    const data=profils.filter(p=>filtreProfil==='all'||p.role===filtreProfil);
+    const labels={benevole:'Bénévole',skipper:'Skipper',soignant:'Soignant·e'};
+    const champIdxs=Object.values(champions);
+    grid.innerHTML=data.map(p=>{
+      const i=profils.indexOf(p);
+      const isChamp=champIdxs.includes(i);
+      const med=getMedaille(p.sorties);
+      return `<div class="profil-card ${isChamp?'champion':''}" data-role="${p.role}">
+        ${isChamp?`<span class="badge-champion">🏆 ${p.role==='skipper'?'Capitaine':p.role==='soignant'?'Soignant·e':'Bénévole'} du mois</span>`:''}
+        <div class="profil-avatar avatar-${p.role}">${p.initiales}</div>
+        <div class="profil-role role-${p.role}">${labels[p.role]}</div>
+        ${med?`<div><span class="medaille ${med.classe}">${med.label}</span></div>`:''}
+        <h4 style="margin-top:.5rem">${p.nom}</h4>
+        <p style="color:var(--texte-doux);font-size:.85rem;margin-top:.2rem">${p.poste}</p>
+        <p class="profil-bio">${p.bio}</p>
+        <div class="profil-stats">
+          <div><strong>${p.sorties}</strong>${labelStat[p.role]}</div>
+          <div><strong>${p.statut||'Actif'}</strong>statut</div>
+        </div>
+        <div class="profil-actions">
+          <button onclick="openChat(${i})">💬 Message</button>
+          ${p.role!=='benevole'?`<button class="relancer" onclick="relancer(${i})">🔔 Relancer</button>`:''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+  function relancer(i){
+    const p=profils[i];
+    toast(`🔔 Relance envoyée à ${p.nom} (SMS + email)`);
+  }
+
+  // ============ CHAT ============
+  // Conversations exemple (en mémoire, ne persistent pas)
+  const conversations={};
+  const messagesExemple={
+    soignant:[
+      {from:'them',text:'Bonjour, est-ce qu\'il reste de la place pour la sortie du 28 mai ?',time:'10:32'},
+      {from:'me',text:'Bonjour ! Oui il reste 3 places. Vous voulez que je vous inscrive ?',time:'10:45'},
+      {from:'them',text:'Avec plaisir, merci 🙏',time:'10:47'},
+    ],
+    skipper:[
+      {from:'me',text:'Bonjour, êtes-vous dispo pour la sortie du 11 juin ?',time:'09:15'},
+      {from:'them',text:'Oui je suis partant·e, je confirme ce soir',time:'12:03'},
+    ],
+    benevole:[
+      {from:'them',text:'J\'ai préparé les flyers pour le forum, je les apporte demain',time:'18:22'},
+      {from:'me',text:'Super, merci beaucoup !',time:'18:30'},
+    ]
+  };
+  let chatProfilIdx=null;
+  function openChat(i){
+    chatProfilIdx=i;
+    const p=profils[i];
+    if(!conversations[i])conversations[i]=[...messagesExemple[p.role]];
+    document.getElementById('chat-content').innerHTML=`
+      <div class="chat-header">
+        <div class="profil-avatar avatar-${p.role}">${p.initiales}</div>
+        <div>
+          <h4>${p.nom}</h4>
+          <span>${p.poste} · ${p.role==='soignant'?'Soignant·e':p.role==='skipper'?'Skipper':'Bénévole'}</span>
+        </div>
+        <button class="close" onclick="closeChat()">×</button>
+      </div>
+      <div class="chat-body" id="chat-body"></div>
+      <div class="chat-quick">
+        <button onclick="sendQuick('Bonjour, vous êtes inscrit·e à la prochaine sortie ?')">Vous êtes inscrit·e ?</button>
+        <button onclick="sendQuick('Petit rappel : on se voit ${p.role==='soignant'?'samedi':'dimanche'} au port 🌊')">Rappel sortie</button>
+        <button onclick="sendQuick('Merci pour votre engagement 💚')">Remerciement</button>
+      </div>
+      <form class="chat-input" onsubmit="sendMessage(event)">
+        <input type="text" id="chat-input-field" placeholder="Écrire un message..." autocomplete="off" required>
+        <button type="submit">Envoyer</button>
+      </form>`;
+    renderChatBody();
+    document.getElementById('chat-modal').classList.add('show');
+  }
+  function renderChatBody(){
+    const body=document.getElementById('chat-body');
+    if(!body)return;
+    body.innerHTML=conversations[chatProfilIdx].map(m=>`
+      <div class="chat-msg ${m.from}">${m.text}<span class="time">${m.time}</span></div>
+    `).join('');
+    body.scrollTop=body.scrollHeight;
+  }
+  function sendMessage(e){
+    e.preventDefault();
+    const inp=document.getElementById('chat-input-field');
+    if(!inp.value.trim())return;
+    const now=new Date();
+    const time=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+    conversations[chatProfilIdx].push({from:'me',text:inp.value,time});
+    inp.value='';
+    renderChatBody();
+    // Simuler une réponse
+    setTimeout(()=>{
+      const replies=['Merci de m\'avoir contacté·e 🙏','C\'est noté, je reviens vers vous','Très bien, à très vite !','D\'accord, merci pour l\'info'];
+      const r=replies[Math.floor(Math.random()*replies.length)];
+      const t=new Date();
+      const tm=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0');
+      conversations[chatProfilIdx].push({from:'them',text:r,time:tm});
+      renderChatBody();
+    },1400);
+  }
+  function sendQuick(t){
+    document.getElementById('chat-input-field').value=t;
+    document.getElementById('chat-input-field').focus();
+  }
+  function closeChat(){
+    document.getElementById('chat-modal').classList.remove('show');
+  }
+  function filterProfils(f,btn){
+    filtreProfil=f;
+    document.querySelectorAll('[data-pfilter]').forEach(b=>b.classList.toggle('active',b===btn));
+    renderProfils();
+  }
+
+  // ============ INSCRIPTION ============
+  const roleConfig={
+    soignant:{icone:'🩺',titre:'Inscription Soignant·e',sub:'Pour participer à une sortie en mer — gratuit et confidentiel',cta:'Envoyer ma candidature soignant·e'},
+    skipper:{icone:'⛵',titre:'Inscription Skipper bénévole',sub:'Pour proposer votre bateau et partager du temps en mer',cta:'Envoyer ma candidature skipper'},
+    benevole:{icone:'🤝',titre:'Inscription Bénévole à terre',sub:'Pour aider à la coordination, l\'accueil et la communication',cta:'Envoyer ma candidature bénévole'}
+  };
+  function selectRole(r,card){
+    roleSelectionne=r;
+    document.querySelectorAll('.role-card').forEach(c=>c.classList.toggle('selected',c===card));
+    document.querySelectorAll('.champs-role').forEach(c=>c.style.display='none');
+    document.getElementById('champs-'+r).style.display='block';
+    const cfg=roleConfig[r];
+    document.getElementById('form-inscription').dataset.role=r;
+    document.getElementById('form-icon').textContent=cfg.icone;
+    document.getElementById('form-title').textContent=cfg.titre;
+    document.getElementById('form-subtitle').textContent=cfg.sub;
+    document.getElementById('form-submit').textContent=cfg.cta;
+    document.getElementById('view-inscription').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function submitInscription(e){
+    e.preventDefault();
+    const data=Object.fromEntries(new FormData(e.target));
+    toast('✅ Merci '+data.prenom+' ! Votre candidature ('+roleSelectionne+') est envoyée. Un bénévole vous recontacte sous 48h.');
+    e.target.reset();
+    setTimeout(()=>showView('accueil'),2500);
+  }
+
+  // ============ MES SORTIES ============
+  function renderMesSorties(){
+    const wrap=document.getElementById('my-sorties');
+    const data=sorties.filter(s=>mesSorties.includes(s.id));
+    wrap.innerHTML=data.map(s=>`
+      <div class="my-sortie">
+        <div class="my-sortie-date"><span class="d">${s.jour}</span><span class="m">${s.mois.slice(0,3)}</span></div>
+        <div class="my-sortie-info">
+          <strong>${s.titre}</strong>
+          <span>${s.duree} · skipper ${s.skipper} · ${s.inscrits}/${s.places} soignants</span>
+        </div>
+        <button class="btn btn-outline" style="font-size:.8rem;padding:.4rem .8rem" onclick="showSortieDetail(${s.id})">Détail</button>
+      </div>`).join('');
+  }
+
+  // ============ TOAST ============
+  function toast(msg){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),3500);
+  }
+
+  // ============ INIT ============
+  renderSorties();renderProfils();renderMesSorties();renderHonneurs();
+</script>
+</body>
+</html>
