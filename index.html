@@ -257,6 +257,22 @@
     padding:1.2rem 1.4rem;margin-bottom:1.6rem;
     box-shadow:0 6px 18px rgba(28,45,79,.05);
   }
+  .notice-test{
+    background:linear-gradient(180deg,#fff7e6,#fffbf0);
+    border:1px solid #f5d7a3;border-left:4px solid #e8a64a;
+    border-radius:var(--r-md);
+    padding:1.1rem 1.3rem;margin:1.2rem 0 1.6rem;
+    color:#7a5520;font-size:.95rem;line-height:1.55;
+  }
+  .notice-test strong{color:#5a3d10}
+  .notice-test .notice-title{display:flex;align-items:center;gap:.5rem;font-weight:600;margin-bottom:.4rem;color:#5a3d10}
+  .form-success{
+    background:linear-gradient(180deg,#eaf8ed,#f5fcf6);
+    border:1px solid #b6e0bf;border-left:4px solid var(--vert);
+    border-radius:var(--r-md);padding:1.5rem 1.6rem;margin-top:1rem;
+    color:#1a5f2a;font-size:1rem;line-height:1.55;
+  }
+  .form-success h4{color:#0e3d18;margin-bottom:.5rem;font-size:1.15rem}
   .apercu-role h4{margin-bottom:.6rem;color:var(--bleu-marine)}
   .apercu-row{
     display:grid;grid-template-columns:54px 1fr auto;gap:1rem;align-items:center;
@@ -563,6 +579,11 @@
     <span class="section-tag">⚓ Rejoindre l'équipage</span>
     <h2>Comment veux-tu participer ?</h2>
     <p class="section-intro">Choisis ton rôle. Tu verras tout de suite combien de places sont disponibles pour toi sur les prochaines sorties.</p>
+
+    <div class="notice-test">
+      <div class="notice-title">⚠️ Phase de test — inscriptions pas encore ouvertes</div>
+      Les inscriptions officielles pour la sortie du 13 juin ne sont pas encore ouvertes, et le <strong>paiement HelloAsso</strong> n'est donc pas encore actif. Tu peux quand même tester le formulaire et nous laisser tes coordonnées : on te recontactera dès que les inscriptions ouvriront pour finaliser ton inscription et le règlement. Merci de ton aide pour tester l'appli ! 🙏
+    </div>
 
     <div class="role-picker">
       <div class="role-card" data-role="soignant" onclick="selectRole('soignant')">
@@ -965,8 +986,8 @@ function selectRole(role){
   }, 80);
 }
 
-/* ============ Envoi du formulaire (mailto) ============ */
-function submitInscription(ev, role){
+/* ============ Envoi du formulaire (FormSubmit) ============ */
+async function submitInscription(ev, role){
   ev.preventDefault();
   const form = ev.target;
   const fd = new FormData(form);
@@ -975,26 +996,50 @@ function submitInscription(ev, role){
     skipper:  'Skipper',
     benevole: 'Bénévole'
   };
-  // Reconstitue toutes les valeurs (en regroupant les checkboxes par nom)
+  // Regroupe les valeurs (les checkboxes du même nom sont concaténées)
   const grouped = {};
   for (const [k, v] of fd.entries()){
     if (!v && v !== 0) continue;
     if (grouped[k] === undefined) grouped[k] = v;
     else grouped[k] = (Array.isArray(grouped[k]) ? grouped[k] : [grouped[k]]).concat(v);
   }
-  let body = 'Nouvelle inscription — ' + labels[role] + '\n\n';
+  // Prépare le payload pour FormSubmit
+  const payload = {
+    _subject: '[GEM66] Inscription ' + labels[role] + ' — ' + (grouped.prenom || '') + ' ' + (grouped.nom || ''),
+    _template: 'table',
+    _captcha: 'false',
+    Rôle: labels[role]
+  };
   for (const k of Object.keys(grouped)){
     if (k === 'rgpd') continue;
     const val = Array.isArray(grouped[k]) ? grouped[k].join(', ') : grouped[k];
-    body += '• ' + k + ' : ' + val + '\n';
+    payload[k] = val;
   }
-  body += '\n— Envoyé depuis le site GEM66 (antenne 66)';
-  const subject = '[GEM66] Inscription ' + labels[role] + ' — ' + (grouped.prenom || '') + ' ' + (grouped.nom || '');
-  const mailto = 'mailto:guerirenmer66@gmail.com'
-    + '?subject=' + encodeURIComponent(subject)
-    + '&body=' + encodeURIComponent(body);
-  window.location.href = mailto;
-  toast('📧 Ton mail s\'ouvre — il ne reste plus qu\'à l\'envoyer !');
+  // Etat "envoi en cours"
+  const btn = form.querySelector('button[type="submit"]');
+  const originalText = btn ? btn.textContent : '';
+  if (btn){ btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
+  try{
+    const res = await fetch('https://formsubmit.co/ajax/guerirenmer66@gmail.com', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    const ok = data && (data.success === 'true' || data.success === true);
+    if (!ok) throw new Error('échec envoi');
+    // Succès — on remplace le contenu du formulaire par un message
+    form.innerHTML = '<div class="form-success">'
+      + '<h4>✅ Merci ' + (grouped.prenom || '') + ' !</h4>'
+      + '<p>Ton inscription en tant que <strong>' + labels[role] + '</strong> a bien été envoyée. '
+      + 'On te recontacte très vite par email pour la suite.</p>'
+      + '<p style="margin-top:.6rem;font-size:.9rem;color:#3a6f4a">📧 Pense à vérifier tes spams si tu n\'as pas de réponse sous 48h.</p>'
+      + '</div>';
+    toast('✅ Inscription envoyée — merci !');
+  } catch (err){
+    if (btn){ btn.disabled = false; btn.textContent = originalText; }
+    toast('⚠️ Erreur d\'envoi. Réessaie ou écris-nous à guerirenmer66@gmail.com');
+  }
   return false;
 }
 
