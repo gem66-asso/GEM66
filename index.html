@@ -467,7 +467,16 @@
     .stats{margin-top:-3rem}
     .sps-phone{font-size:1.6rem;padding:1rem 1.5rem}
   }
-</style>
+
+  /* === LUCIDE ICONS === */
+  .icon{display:inline-flex;align-items:center;justify-content:center;vertical-align:-0.18em;width:1.1em;height:1.1em;stroke-width:2}
+  .icon svg{width:100%;height:100%}
+  .icon-heart svg{color:#22a942}
+  .mission-icon,.role-icon{font-size:0;line-height:0}
+  .mission-icon .icon,.role-icon .icon{width:48px;height:48px;stroke-width:1.5}
+  .notice-title .icon,.section-tag .icon,h3 .icon,h4 .icon{width:1.05em;height:1.05em;margin-right:.25em}
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -495,7 +504,7 @@
         <strong>Guérir en Mer</strong>
       </div>
     </div>
-    <button class="burger" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <button class="burger" onclick="document.querySelector('.nav-links').classList.toggle('open')"><i data-lucide="menu" class="icon"></i></button>
     <nav class="nav-links">
       <button class="nav-link active" data-view="accueil" onclick="showView('accueil')">Accueil</button>
       <button class="nav-link" data-view="sorties" onclick="showView('sorties')">Sorties</button>
@@ -533,17 +542,17 @@
 
       <div class="mission">
         <div class="mission-card">
-          <div class="mission-icon">🌊</div>
+          <div class="mission-icon"><i data-lucide="waves" class="icon"></i></div>
           <h3>Respirer</h3>
           <p>Une journée loin de l'hôpital, du téléphone, des plannings. Le bruit des vagues, le vent, et c'est tout.</p>
         </div>
         <div class="mission-card">
-          <div class="mission-icon">⛵</div>
+          <div class="mission-icon"><i data-lucide="sailboat" class="icon"></i></div>
           <h3>Naviguer</h3>
           <p>Au départ de Saint-Cyprien, des skippers bénévoles t'accueillent à bord — aucune expérience requise.</p>
         </div>
         <div class="mission-card">
-          <div class="mission-icon">🤝</div>
+          <div class="mission-icon"><i data-lucide="handshake" class="icon"></i></div>
           <h3>Partager</h3>
           <p>Avec d'autres soignants qui comprennent ce que tu traverses, sans avoir à expliquer.</p>
         </div>
@@ -564,7 +573,7 @@
 <!-- ============ SORTIES ============ -->
 <section id="view-sorties" class="view">
   <div class="container">
-    <span class="section-tag">📅 Calendrier</span>
+    <span class="section-tag"><i data-lucide="calendar-days" class="icon"></i> Calendrier</span>
     <h2>Les prochaines sorties</h2>
     <p class="section-intro">Sur chaque sortie, tu vois en un coup d'œil le nombre de soignants, de skippers et de bénévoles déjà inscrits. Clique sur une sortie pour voir le détail et t'inscrire.</p>
 
@@ -575,41 +584,41 @@
 <!-- ============ INSCRIPTION ============ -->
 <section id="view-inscription" class="view">
   <div class="container">
-    <span class="section-tag">⚓ Rejoindre l'équipage</span>
+    <span class="section-tag"><i data-lucide="anchor" class="icon"></i> Rejoindre l'équipage</span>
     <h2>Comment veux-tu participer ?</h2>
     <p class="section-intro">Choisis ton rôle. Tu verras tout de suite combien de places sont disponibles pour toi sur les prochaines sorties.</p>
 
     <div class="notice-test">
-      <div class="notice-title">⚠️ Phase de test — inscriptions pas encore ouvertes</div>
-      Les inscriptions officielles pour la sortie du 13 juin ne sont pas encore ouvertes, et le <strong>paiement HelloAsso</strong> n'est donc pas encore actif. Tu peux quand même tester le formulaire et nous laisser tes coordonnées : on te recontactera dès que les inscriptions ouvriront pour finaliser ton inscription et le règlement. Merci de ton aide pour tester l'appli ! 🙏
+      <div class="notice-title"><i data-lucide="triangle-alert" class="icon"></i> Phase de test — inscriptions pas encore ouvertes</div>
+      Les inscriptions officielles pour la sortie du 13 juin ne sont pas encore ouvertes, et le <strong>paiement HelloAsso</strong> n'est donc pas encore actif. Tu peux quand même tester le formulaire et nous laisser tes coordonnées : on te recontactera dès que les inscriptions ouvriront pour finaliser ton inscription et le règlement. Merci de ton aide pour tester l'appli ! <i data-lucide="heart-handshake" class="icon"></i>
     </div>
 
     <div class="role-picker">
       <div class="role-card" data-role="soignant" onclick="selectRole('soignant')">
-        <div class="role-icon">🩺</div>
+        <div class="role-icon"><i data-lucide="stethoscope" class="icon"></i></div>
         <h4>Soignant·e</h4>
         <p>Tu travailles dans le soin et tu as besoin d'une bouffée d'air.</p>
       </div>
       <div class="role-card" data-role="skipper" onclick="selectRole('skipper')">
-        <div class="role-icon">⛵</div>
+        <div class="role-icon"><i data-lucide="sailboat" class="icon"></i></div>
         <h4>Skipper</h4>
         <p>Tu navigues et tu veux mettre ton bateau à disposition.</p>
       </div>
       <div class="role-card" data-role="benevole" onclick="selectRole('benevole')">
-        <div class="role-icon">🤝</div>
+        <div class="role-icon"><i data-lucide="handshake" class="icon"></i></div>
         <h4>Bénévole</h4>
         <p>Tu veux donner un coup de main à terre ou à bord.</p>
       </div>
     </div>
 
     <div id="apercu-role" class="apercu-role" style="display:none">
-      <h4 id="apercu-titre">📅 Prochaines sorties — places dispo pour ton rôle</h4>
+      <h4 id="apercu-titre"><i data-lucide="calendar-days" class="icon"></i> Prochaines sorties — places dispo pour ton rôle</h4>
       <div id="apercu-list"></div>
     </div>
 
     <!-- ====== Formulaire SOIGNANT·E ====== -->
     <form id="form-soignant" class="form-role" data-role="soignant" style="display:none" onsubmit="return submitInscription(event,'soignant')">
-      <h3>🩺 Tes renseignements — soignant·e</h3>
+      <h3><i data-lucide="stethoscope" class="icon"></i> Tes renseignements — soignant·e</h3>
       <p class="form-intro">Juste l'essentiel pour qu'on revienne vers toi.</p>
       <div class="form-grid">
         <div class="form-group"><label>Prénom *</label><input type="text" name="prenom" required></div>
@@ -634,14 +643,14 @@
       </div>
       <label class="form-rgpd"><input type="checkbox" name="rgpd" required> J'accepte que mes informations soient utilisées par GEM66 antenne 66 pour gérer mon inscription. Aucun partage à des tiers.</label>
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">📨 Envoyer mes renseignements</button>
+        <button type="submit" class="btn btn-primary"><i data-lucide="mail" class="icon"></i> Envoyer mes renseignements</button>
         <span class="form-note">Tu recevras une confirmation par mail.</span>
       </div>
     </form>
 
     <!-- ====== Formulaire SKIPPER ====== -->
     <form id="form-skipper" class="form-role" data-role="skipper" style="display:none" onsubmit="return submitInscription(event,'skipper')">
-      <h3>⛵ Tes renseignements — skipper</h3>
+      <h3><i data-lucide="sailboat" class="icon"></i> Tes renseignements — skipper</h3>
       <p class="form-intro">Juste l'essentiel pour qu'on revienne vers toi.</p>
       <div class="form-grid">
         <div class="form-group"><label>Prénom *</label><input type="text" name="prenom" required></div>
@@ -651,14 +660,14 @@
       </div>
       <label class="form-rgpd"><input type="checkbox" name="rgpd" required> J'accepte que mes informations soient utilisées par GEM66 antenne 66 pour organiser les sorties. Aucun partage à des tiers.</label>
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">📨 Envoyer mes renseignements</button>
+        <button type="submit" class="btn btn-primary"><i data-lucide="mail" class="icon"></i> Envoyer mes renseignements</button>
         <span class="form-note">On revient vers toi pour caler les dates.</span>
       </div>
     </form>
 
     <!-- ====== Formulaire BÉNÉVOLE ====== -->
     <form id="form-benevole" class="form-role" data-role="benevole" style="display:none" onsubmit="return submitInscription(event,'benevole')">
-      <h3>🤝 Tes renseignements — bénévole</h3>
+      <h3><i data-lucide="handshake" class="icon"></i> Tes renseignements — bénévole</h3>
       <p class="form-intro">Juste l'essentiel pour qu'on revienne vers toi.</p>
       <div class="form-grid">
         <div class="form-group"><label>Prénom *</label><input type="text" name="prenom" required></div>
@@ -678,7 +687,7 @@
       </div>
       <label class="form-rgpd"><input type="checkbox" name="rgpd" required> J'accepte que mes informations soient utilisées par GEM66 antenne 66 pour coordonner les sorties. Aucun partage à des tiers.</label>
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">📨 Envoyer mes renseignements</button>
+        <button type="submit" class="btn btn-primary"><i data-lucide="mail" class="icon"></i> Envoyer mes renseignements</button>
         <span class="form-note">On revient vers toi sous quelques jours.</span>
       </div>
     </form>
@@ -690,7 +699,7 @@
     </div>
 
     <div class="info-box" style="margin-top:1.6rem;border-left-color:var(--turquoise)">
-      <h3>💬 Une question avant de t'inscrire ?</h3>
+      <h3><i data-lucide="message-circle" class="icon"></i> Une question avant de t'inscrire ?</h3>
       <p>Écris-nous à <a href="mailto:guerirenmer66@gmail.com" style="color:var(--turquoise);font-weight:600">guerirenmer66@gmail.com</a> — on te répond sous 48h.</p>
     </div>
   </div>
@@ -699,34 +708,34 @@
 <!-- ============ SPS ============ -->
 <section id="view-sps" class="view">
   <div class="container">
-    <span class="section-tag">💚 Tu n'es pas seul·e</span>
+    <span class="section-tag"><i data-lucide="heart" class="icon icon-heart"></i> Tu n'es pas seul·e</span>
     <h2>Tu peux parler. On t'écoute.</h2>
     <p class="section-intro">Si tu traverses un moment difficile — épuisement, anxiété, perte de sens — une ligne d'écoute existe, tenue par des psychologues qui connaissent nos métiers. C'est SPS : gratuit, anonyme, 24h/24. Tu n'as rien à expliquer pour avoir le droit d'appeler.</p>
 
     <div class="sps-hero">
       <h2 style="color:#fff">Appelle. Maintenant.</h2>
       <p>Tu n'as rien à expliquer. Tu n'as pas à justifier. Quelqu'un est là pour t'écouter.</p>
-      <a href="tel:0805232336" class="sps-phone">📞 0 805 23 23 36</a>
+      <a href="tel:0805232336" class="sps-phone"><i data-lucide="phone" class="icon"></i> 0 805 23 23 36</a>
       <div class="sps-meta">
-        <span>🕓 24h/24 · 7j/7</span>
+        <span><i data-lucide="clock" class="icon"></i> 24h/24 · 7j/7</span>
         <span>🆓 Numéro vert gratuit</span>
-        <span>🤐 Anonyme</span>
+        <span><i data-lucide="lock" class="icon"></i> Anonyme</span>
       </div>
     </div>
 
     <div class="sps-grid">
       <div class="sps-card">
-        <div class="ico">🎧</div>
+        <div class="ico"><i data-lucide="headphones" class="icon"></i></div>
         <h4>Une écoute dédiée</h4>
         <p>Les psychologues de SPS connaissent les réalités du soin : gardes, sous-effectifs, violences institutionnelles. Tu n'auras pas à tout expliquer.</p>
       </div>
       <div class="sps-card">
-        <div class="ico">🔒</div>
+        <div class="ico"><i data-lucide="lock" class="icon"></i></div>
         <h4>Anonyme et confidentiel</h4>
         <p>Aucune trace, aucun rapport à ton employeur. Ce que tu dis reste entre toi et la personne qui t'écoute.</p>
       </div>
       <div class="sps-card">
-        <div class="ico">🛟</div>
+        <div class="ico"><i data-lucide="life-buoy" class="icon"></i></div>
         <h4>Au-delà de l'appel</h4>
         <p>Si besoin, SPS peut t'orienter vers une prise en charge psychologique gratuite (jusqu'à 5 séances).</p>
       </div>
@@ -737,11 +746,11 @@
     </div>
 
     <div class="urgence">
-      <strong>🚨 En cas d'urgence vitale</strong>
+      <strong><i data-lucide="siren" class="icon"></i> En cas d'urgence vitale</strong>
       <p style="margin-top:.4rem">Si tu as des pensées suicidaires ou que tu es en danger immédiat :</p>
       <p style="margin-top:.4rem">
-        <a href="tel:3114">📞 3114</a> — Numéro national de prévention du suicide (24h/24, gratuit)<br>
-        <a href="tel:15">📞 15</a> — SAMU
+        <a href="tel:3114"><i data-lucide="phone" class="icon"></i> 3114</a> — Numéro national de prévention du suicide (24h/24, gratuit)<br>
+        <a href="tel:15"><i data-lucide="phone" class="icon"></i> 15</a> — SAMU
       </p>
     </div>
   </div>
@@ -904,11 +913,11 @@ function sortieCardHTML(s){
       '<div class="sortie-day"><span class="d">' + s.jour + '</span><span class="wd">' + wd[d.getDay()] + '</span></div>',
       '<div class="sortie-info">',
         '<h4>' + s.titre + '</h4>',
-        '<div class="sortie-meta"><span>📍 ' + s.port + '</span><span>🕓 ' + s.duree + '</span></div>',
+        '<div class="sortie-meta"><span><i data-lucide="map-pin" class="icon"></i> ' + s.port + '</span><span><i data-lucide="clock" class="icon"></i> ' + s.duree + '</span></div>',
         '<div class="roles-bar">',
-          roleStatHTML('soignant', '🩺 Soignants', s.inscrits, s.places, fullS),
-          roleStatHTML('skipper',  '⛵ Skippers',  s.skippersInscrits, s.skippersPlaces, fullK),
-          roleStatHTML('benevole', '🤝 Bénévoles', s.benevolesInscrits, s.benevolesPlaces, fullB),
+          roleStatHTML('soignant', '<i data-lucide="stethoscope" class="icon"></i> Soignants', s.inscrits, s.places, fullS),
+          roleStatHTML('skipper',  '<i data-lucide="sailboat" class="icon"></i> Skippers',  s.skippersInscrits, s.skippersPlaces, fullK),
+          roleStatHTML('benevole', '<i data-lucide="handshake" class="icon"></i> Bénévoles', s.benevolesInscrits, s.benevolesPlaces, fullB),
         '</div>',
       '</div>',
       '<div class="sortie-side"><span class="pill ' + pillCls + '">' + pillTxt + '</span></div>',
@@ -944,12 +953,12 @@ function openSortie(id){
   document.getElementById('modal-content').innerHTML = [
     '<button class="modal-close" onclick="closeModal()">×</button>',
     '<h3>' + s.titre + '</h3>',
-    '<div class="modal-meta">📅 ' + s.jour + ' ' + s.mois + ' ' + s.annee + ' · 📍 ' + s.port + ' · 🕓 ' + s.duree + '</div>',
+    '<div class="modal-meta"><i data-lucide="calendar-days" class="icon"></i> ' + s.jour + ' ' + s.mois + ' ' + s.annee + ' · <i data-lucide="map-pin" class="icon"></i> ' + s.port + ' · <i data-lucide="clock" class="icon"></i> ' + s.duree + '</div>',
     '<p class="modal-desc">' + s.desc + '</p>',
     '<div class="roles-bar">',
-      roleStatHTML('soignant', '🩺 Soignants', s.inscrits, s.places, fullS),
-      roleStatHTML('skipper',  '⛵ Skippers',  s.skippersInscrits, s.skippersPlaces, fullK),
-      roleStatHTML('benevole', '🤝 Bénévoles', s.benevolesInscrits, s.benevolesPlaces, fullB),
+      roleStatHTML('soignant', '<i data-lucide="stethoscope" class="icon"></i> Soignants', s.inscrits, s.places, fullS),
+      roleStatHTML('skipper',  '<i data-lucide="sailboat" class="icon"></i> Skippers',  s.skippersInscrits, s.skippersPlaces, fullK),
+      roleStatHTML('benevole', '<i data-lucide="handshake" class="icon"></i> Bénévoles', s.benevolesInscrits, s.benevolesPlaces, fullB),
     '</div>',
     cta
   ].join('');
@@ -1029,15 +1038,15 @@ async function submitInscription(ev, role){
     if (!ok) throw new Error('échec envoi');
     // Succès — on remplace le contenu du formulaire par un message
     form.innerHTML = '<div class="form-success">'
-      + '<h4>✅ Merci ' + (grouped.prenom || '') + ' !</h4>'
+      + '<h4><i data-lucide="circle-check" class="icon"></i> Merci ' + (grouped.prenom || '') + ' !</h4>'
       + '<p>Ton inscription en tant que <strong>' + labels[role] + '</strong> a bien été envoyée. '
-      + 'Tu participes à la prochaine sortie ! 🌊</p>'
-      + '<p style="margin-top:.6rem;font-size:.9rem;color:#3a6f4a">📧 🩺 Soignant·e ? Retourne sur la page Sorties et clique sur ta sortie pour finaliser ton paiement via HelloAsso.</p>'
+      + 'Tu participes à la prochaine sortie ! <i data-lucide="waves" class="icon"></i></p>'
+      + '<p style="margin-top:.6rem;font-size:.9rem;color:#3a6f4a"><i data-lucide="mail" class="icon"></i> <i data-lucide="stethoscope" class="icon"></i> Soignant·e ? Retourne sur la page Sorties et clique sur ta sortie pour finaliser ton paiement via HelloAsso.</p>'
       + '</div>';
-    toast('✅ Inscription envoyée — merci !');
+    toast('<i data-lucide="circle-check" class="icon"></i> Inscription envoyée — merci !');
   } catch (err){
     if (btn){ btn.disabled = false; btn.textContent = originalText; }
-    toast('⚠️ Erreur d\'envoi. Réessaie ou écris-nous à guerirenmer66@gmail.com');
+    toast('<i data-lucide="triangle-alert" class="icon"></i> Erreur d\'envoi. Réessaie ou écris-nous à guerirenmer66@gmail.com');
   }
   return false;
 }
@@ -1060,8 +1069,8 @@ function renderApercu(role){
     return;
   }
 
-  const labelRole = { soignant: '🩺 Soignants', skipper: '⛵ Bateaux', benevole: '🤝 Bénévoles' }[role];
-  if (titre) titre.textContent = '📅 Prochaines sorties — places dispo pour ' + labelRole;
+  const labelRole = { soignant: '<i data-lucide="stethoscope" class="icon"></i> Soignants', skipper: '<i data-lucide="sailboat" class="icon"></i> Bateaux', benevole: '<i data-lucide="handshake" class="icon"></i> Bénévoles' }[role];
+  if (titre) titre.textContent = '<i data-lucide="calendar-days" class="icon"></i> Prochaines sorties — places dispo pour ' + labelRole;
 
   list.innerHTML = aVenir.map(s => {
     let inscrits = 0, places = 0;
@@ -1101,5 +1110,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
 });
 </script>
+  <script>document.addEventListener("DOMContentLoaded",function(){if(window.lucide)lucide.createIcons();});</script>
 </body>
 </html>
