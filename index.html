@@ -521,9 +521,20 @@
       <button class="nav-link" data-view="sorties" onclick="showView('sorties')">Sorties</button>
       <button class="nav-link" data-view="inscription" onclick="showView('inscription')">Inscription</button>
       <button class="nav-link" data-view="sps" onclick="showView('sps')">Besoin d’écoute ?</button>
-      <button id="account-btn" class="nav-link" onclick="openAuthModal()" style="margin-left:auto;display:inline-flex;align-items:center;gap:.35em"><i data-lucide="user-round" class="icon"></i> <span id="account-label">Se connecter</span></button>
-      <button id="admin-btn" class="nav-link" onclick="showView('admin')" style="display:none;align-items:center;gap:.35em"><i data-lucide="shield" class="icon"></i> Admin</button>
-      <button id="logout-btn" class="nav-link" onclick="signOutUser()" style="display:none;align-items:center;gap:.35em" title="Se déconnecter"><i data-lucide="log-out" class="icon"></i> Déconnexion</button>
+      <div class="account-menu-wrap" style="margin-left:auto;position:relative">
+        <button id="account-btn" class="nav-link" onclick="onAccountClick()" style="display:inline-flex;align-items:center;gap:.35em">
+          <i data-lucide="user-round" class="icon"></i>
+          <span id="account-label">Se connecter</span>
+        </button>
+        <div id="account-menu" style="display:none;position:absolute;top:100%;right:0;background:#fff;border:1px solid #ddd;border-radius:.5em;box-shadow:0 4px 14px rgba(0,0,0,.15);min-width:190px;margin-top:.4em;z-index:200;overflow:hidden">
+          <a id="menu-admin" href="#" onclick="closeAccountMenu();showView('admin');return false;" style="display:none;padding:.75em 1em;color:var(--bleu-marine);text-decoration:none;align-items:center;gap:.5em;border-bottom:1px solid #eee">
+            <i data-lucide="shield" class="icon"></i> Espace admin
+          </a>
+          <a id="menu-logout" href="#" onclick="closeAccountMenu();signOutUser();return false;" style="display:flex;padding:.75em 1em;color:#c0392b;text-decoration:none;align-items:center;gap:.5em">
+            <i data-lucide="log-out" class="icon"></i> Déconnexion
+          </a>
+        </div>
+      </div>
     </nav>
   </div>
 </header>
@@ -1089,24 +1100,39 @@ async function refreshUser(){
 function updateAccountUI(){
   const btn = document.getElementById("account-btn");
   const lab = document.getElementById("account-label");
-  const adm = document.getElementById("admin-btn");
-  const out = document.getElementById("logout-btn");
+  const adm = document.getElementById("menu-admin");
+  const menu = document.getElementById("account-menu");
   if (!btn) return;
   if (currentUser && currentProfile){
     lab.textContent = currentProfile.prenom || currentUser.email.split("@")[0];
-    btn.onclick = function(){};
     btn.title = "Connecté en tant que " + currentUser.email;
-    if (adm) adm.style.display = (currentProfile.role === "admin") ? "inline-flex" : "none";
-    if (out) out.style.display = "inline-flex";
+    if (adm) adm.style.display = (currentProfile.role === "admin") ? "flex" : "none";
   } else {
     lab.textContent = "Se connecter";
-    btn.onclick = openAuthModal;
     btn.title = "";
+    if (menu) menu.style.display = "none";
     if (adm) adm.style.display = "none";
-    if (out) out.style.display = "none";
   }
   if (window.lucide) lucide.createIcons();
 }
+
+function onAccountClick(){
+  if (currentUser && currentProfile){ toggleAccountMenu(); }
+  else { openAuthModal(); }
+}
+function toggleAccountMenu(){
+  const m = document.getElementById("account-menu");
+  if (!m) return;
+  m.style.display = (m.style.display === "block") ? "none" : "block";
+}
+function closeAccountMenu(){
+  const m = document.getElementById("account-menu");
+  if (m) m.style.display = "none";
+}
+document.addEventListener("click", function(e){
+  const wrap = document.querySelector(".account-menu-wrap");
+  if (wrap && !wrap.contains(e.target)) closeAccountMenu();
+});
 
 sb.auth.onAuthStateChange(async (event, session) => {
   await refreshUser();
