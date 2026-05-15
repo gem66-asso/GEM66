@@ -523,6 +523,7 @@
       <button class="nav-link" data-view="sps" onclick="showView('sps')">Besoin d’écoute ?</button>
       <button id="account-btn" class="nav-link" onclick="openAuthModal()" style="margin-left:auto;display:inline-flex;align-items:center;gap:.35em"><i data-lucide="user-round" class="icon"></i> <span id="account-label">Se connecter</span></button>
       <button id="admin-btn" class="nav-link" onclick="showView('admin')" style="display:none;align-items:center;gap:.35em"><i data-lucide="shield" class="icon"></i> Admin</button>
+      <button id="logout-btn" class="nav-link" onclick="signOutUser()" style="display:none;align-items:center;gap:.35em" title="Se déconnecter"><i data-lucide="log-out" class="icon"></i> Déconnexion</button>
     </nav>
   </div>
 </header>
@@ -1089,17 +1090,20 @@ function updateAccountUI(){
   const btn = document.getElementById("account-btn");
   const lab = document.getElementById("account-label");
   const adm = document.getElementById("admin-btn");
+  const out = document.getElementById("logout-btn");
   if (!btn) return;
   if (currentUser && currentProfile){
     lab.textContent = currentProfile.prenom || currentUser.email.split("@")[0];
-    btn.onclick = signOutUser;
-    btn.title = "Cliquer pour se déconnecter";
+    btn.onclick = function(){};
+    btn.title = "Connecté en tant que " + currentUser.email;
     if (adm) adm.style.display = (currentProfile.role === "admin") ? "inline-flex" : "none";
+    if (out) out.style.display = "inline-flex";
   } else {
     lab.textContent = "Se connecter";
     btn.onclick = openAuthModal;
     btn.title = "";
     if (adm) adm.style.display = "none";
+    if (out) out.style.display = "none";
   }
   if (window.lucide) lucide.createIcons();
 }
