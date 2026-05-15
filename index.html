@@ -769,6 +769,32 @@
   </div>
 </section>
 
+<!-- ============ MODAL AUTH ============ -->
+<div class="modal-bg" id="modal-auth" onclick="if(event.target===this)closeAuthModal()" style="display:none">
+  <div class="modal-content auth-card" style="max-width:420px">
+    <button class="modal-close" onclick="closeAuthModal()" aria-label="Fermer">&times;</button>
+    <div id="auth-step-login">
+      <h3 style="margin-top:0;color:var(--bleu-marine)">Se connecter</h3>
+      <p style="color:#555;margin-bottom:1.2em">Recevez un lien de connexion par email — sans mot de passe.</p>
+      <form onsubmit="sendMagicLink(event)" style="display:flex;flex-direction:column;gap:.8em">
+        <label style="display:flex;flex-direction:column;gap:.3em;font-weight:500">
+          Email
+          <input type="email" id="auth-email" required placeholder="votre@email.fr" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
+        </label>
+        <button type="submit" class="cta" style="margin-top:.5em;justify-content:center">
+          <i data-lucide="mail" class="icon"></i> Envoyer le lien magique
+        </button>
+      </form>
+    </div>
+    <div id="auth-step-sent" style="display:none;text-align:center;padding:1em 0">
+      <i data-lucide="mail-check" class="icon" style="width:48px;height:48px;color:var(--vert)"></i>
+      <h3 style="color:var(--bleu-marine)">Email envoyé !</h3>
+      <p>Clique sur le lien dans l'email que nous venons de t'envoyer pour te connecter.</p>
+      <p style="font-size:.9em;color:#666;margin-top:1em">Pense à vérifier tes spams.</p>
+    </div>
+  </div>
+</div>
+
 <!-- ============ MODAL SORTIE ============ -->
 <div class="modal-bg" id="modal-sortie" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modal-content"></div>
