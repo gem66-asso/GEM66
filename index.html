@@ -476,6 +476,7 @@
   .mission-icon .icon,.role-icon .icon{width:48px;height:48px;stroke-width:1.5}
   .notice-title .icon,.section-tag .icon,h3 .icon,h4 .icon{width:1.05em;height:1.05em;margin-right:.25em}
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
@@ -800,47 +801,60 @@
 <script>
 /* ============ DONNÉES ============ */
 // Pour ajouter une sortie : copie un objet, change les champs, et colle l'URL HelloAsso
-const sorties = [
-  {
-    id: 1,
-    jour: 13, mois: 'juin', moisNum: 6, annee: 2026,
-    titre: 'Sortie inaugurale GEM66',
-    port: 'Saint-Cyprien',
-    duree: '9h-17h',
-    desc: "Première sortie en mer de l'antenne 66. Une journée pour célébrer le lancement, faire connaissance avec l'équipage et lever les voiles ensemble.",
-    places: 8, inscrits: 0,
-    skippersPlaces: 2, skippersInscrits: 1,
-    benevolesPlaces: 3, benevolesInscrits: 2,
-    statut: 'soon',
-    helloassoUrl: ''
-  },
-  {
-    id: 2,
-    jour: 11, mois: 'juillet', moisNum: 7, annee: 2026,
-    titre: 'Cap sur les Albères',
-    port: 'Saint-Cyprien',
-    duree: '9h-18h',
-    desc: "Direction la côte rocheuse des Albères. Une journée plus longue pour profiter de la lumière de juillet et d'une baignade au mouillage.",
-    places: 8, inscrits: 0,
-    skippersPlaces: 2, skippersInscrits: 0,
-    benevolesPlaces: 3, benevolesInscrits: 1,
-    statut: 'soon',
-    helloassoUrl: ''
-  },
-  {
-    id: 3,
-    jour: 5, mois: 'septembre', moisNum: 9, annee: 2026,
-    titre: 'Rentrée en mer',
-    port: 'Saint-Cyprien',
-    duree: '9h-17h',
-    desc: "Pour reprendre l'année avec un peu d'air dans les voiles. Idéal pour les soignants qui sortent de l'été chargé en service.",
-    places: 8, inscrits: 0,
-    skippersPlaces: 2, skippersInscrits: 0,
-    benevolesPlaces: 3, benevolesInscrits: 0,
-    statut: 'soon',
-    helloassoUrl: ''
-  }
-];
+let sorties = [];
+
+const SUPABASE_URL = "https://rranwsgwrgptpanalajv.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyYW53c2d3cmdwdHBhbmFsYWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3ODI1NzAsImV4cCI6MjA5NDM1ODU3MH0.CSOqUNkH_p-0KeUEoSE6fxJgWGeaDUFIkSt9YlKJwu8";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+window.sb = sb;
+
+const MOIS_FR = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+
+function mapSortie(row){
+  const d = new Date(row.date_sortie + "T00:00:00");
+  const hd = (row.heure_debut||"09:00:00").substring(0,5).replace(":","h");
+  const hf = (row.heure_fin  ||"17:00:00").substring(0,5).replace(":","h");
+  let statutUI = "soon";
+  if (row.statut === "ouverte") statutUI = "open";
+  else if (row.statut === "complete") statutUI = "full";
+  else if (row.statut === "annulee") statutUI = "cancel";
+  return {
+    id: row.id,
+    jour: d.getDate(),
+    mois: MOIS_FR[d.getMonth()],
+    moisNum: d.getMonth() + 1,
+    annee: d.getFullYear(),
+    titre: row.titre,
+    port: row.port,
+    duree: hd + "-" + hf,
+    desc: row.description || "",
+    places: row.capacite_soignants,
+    inscrits: row.nb_soignants || 0,
+    skippersPlaces: row.capacite_skippers,
+    skippersInscrits: row.nb_skippers || 0,
+    benevolesPlaces: row.capacite_benevoles,
+    benevolesInscrits: row.nb_benevoles || 0,
+    statut: statutUI,
+    helloassoUrl: ""
+  };
+}
+
+async function chargerSorties(){
+  const today = new Date().toISOString().split("T")[0];
+  const { data, error } = await sb
+    .from("sorties_avec_compteurs")
+    .select("*")
+    .gte("date_sortie", today)
+    .neq("statut", "annulee")
+    .order("date_sortie", { ascending: true });
+  if (error){ console.error("Supabase load error:", error); sorties = []; }
+  else { sorties = (data || []).map(mapSortie); }
+  if (typeof renderSorties === "function") renderSorties();
+  if (typeof updateAccueilStats === "function") updateAccueilStats();
+  if (window.lucide) lucide.createIcons();
+}
+window.chargerSorties = chargerSorties;
+document.addEventListener("DOMContentLoaded", chargerSorties);
 
 /* ============ NAVIGATION ============ */
 function showView(name){
