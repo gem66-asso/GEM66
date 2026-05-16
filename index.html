@@ -785,24 +785,74 @@
 <div class="modal-bg" id="modal-auth" onclick="if(event.target===this)closeAuthModal()" style="display:none">
   <div class="modal-content auth-card" style="max-width:420px">
     <button class="modal-close" onclick="closeAuthModal()" aria-label="Fermer">&times;</button>
+
+    <div id="auth-tabs" style="display:flex;gap:.5em;margin-bottom:1.2em;border-bottom:1px solid #eee">
+      <button type="button" id="tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:.6em;background:none;border:none;border-bottom:2px solid var(--bleu-marine);color:var(--bleu-marine);font-weight:600;cursor:pointer">Se connecter</button>
+      <button type="button" id="tab-signup" onclick="switchAuthTab('signup')" style="flex:1;padding:.6em;background:none;border:none;border-bottom:2px solid transparent;color:#666;cursor:pointer">Créer un compte</button>
+    </div>
+
     <div id="auth-step-login">
-      <h3 style="margin-top:0;color:var(--bleu-marine)">Se connecter</h3>
-      <p style="color:#555;margin-bottom:1.2em">Recevez un lien de connexion par email — sans mot de passe.</p>
-      <form onsubmit="sendMagicLink(event)" style="display:flex;flex-direction:column;gap:.8em">
+      <form onsubmit="signInWithPassword(event)" style="display:flex;flex-direction:column;gap:.8em">
         <label style="display:flex;flex-direction:column;gap:.3em;font-weight:500">
           Email
-          <input type="email" id="auth-email" required placeholder="votre@email.fr" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
+          <input type="email" id="login-email" required placeholder="votre@email.fr" autocomplete="email" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:.3em;font-weight:500">
+          Mot de passe
+          <input type="password" id="login-password" required placeholder="••••••••" autocomplete="current-password" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
         </label>
         <button type="submit" class="cta" style="margin-top:.5em;justify-content:center">
-          <i data-lucide="mail" class="icon"></i> Envoyer le lien magique
+          <i data-lucide="log-in" class="icon"></i> Se connecter
+        </button>
+        <a href="#" onclick="switchAuthTab('forgot');return false" style="text-align:center;color:var(--bleu-marine);font-size:.9em;text-decoration:underline">Mot de passe oublié ?</a>
+      </form>
+    </div>
+
+    <div id="auth-step-signup" style="display:none">
+      <form onsubmit="signUpWithPassword(event)" style="display:flex;flex-direction:column;gap:.8em">
+        <div style="display:flex;gap:.6em">
+          <label style="flex:1;display:flex;flex-direction:column;gap:.3em;font-weight:500">
+            Prénom
+            <input type="text" id="signup-prenom" required placeholder="Prénom" autocomplete="given-name" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
+          </label>
+          <label style="flex:1;display:flex;flex-direction:column;gap:.3em;font-weight:500">
+            Nom
+            <input type="text" id="signup-nom" required placeholder="Nom" autocomplete="family-name" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
+          </label>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:.3em;font-weight:500">
+          Email
+          <input type="email" id="signup-email" required placeholder="votre@email.fr" autocomplete="email" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:.3em;font-weight:500">
+          Mot de passe (min. 6 caractères)
+          <input type="password" id="signup-password" required minlength="6" placeholder="••••••••" autocomplete="new-password" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
+        </label>
+        <button type="submit" class="cta" style="margin-top:.5em;justify-content:center">
+          <i data-lucide="user-plus" class="icon"></i> Créer mon compte
         </button>
       </form>
     </div>
+
+    <div id="auth-step-forgot" style="display:none">
+      <h3 style="margin-top:0;color:var(--bleu-marine)">Mot de passe oublié</h3>
+      <p style="color:#555;margin-bottom:1.2em">Indique ton email, nous t'enverrons un lien pour réinitialiser ton mot de passe.</p>
+      <form onsubmit="resetPassword(event)" style="display:flex;flex-direction:column;gap:.8em">
+        <label style="display:flex;flex-direction:column;gap:.3em;font-weight:500">
+          Email
+          <input type="email" id="forgot-email" required placeholder="votre@email.fr" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
+        </label>
+        <button type="submit" class="cta" style="margin-top:.5em;justify-content:center">
+          <i data-lucide="mail" class="icon"></i> Envoyer le lien
+        </button>
+        <a href="#" onclick="switchAuthTab('login');return false" style="text-align:center;color:var(--bleu-marine);font-size:.9em;text-decoration:underline">← Retour à la connexion</a>
+      </form>
+    </div>
+
     <div id="auth-step-sent" style="display:none;text-align:center;padding:1em 0">
       <i data-lucide="mail-check" class="icon" style="width:48px;height:48px;color:var(--vert)"></i>
       <h3 style="color:var(--bleu-marine)">Email envoyé !</h3>
-      <p>Clique sur le lien dans l'email que nous venons de t'envoyer pour te connecter.</p>
-      <p style="font-size:.9em;color:#666;margin-top:1em">Pense à vérifier tes spams.</p>
+      <p>Vérifie ta boîte mail (et tes spams) et clique sur le lien que nous venons de t'envoyer.</p>
     </div>
   </div>
 </div>
@@ -1064,23 +1114,69 @@ let currentProfile = null;
 
 function openAuthModal(){
   document.getElementById("modal-auth").style.display = "flex";
-  document.getElementById("auth-step-login").style.display = "";
-  document.getElementById("auth-step-sent").style.display = "none";
+  switchAuthTab("login");
   if (window.lucide) lucide.createIcons();
 }
 function closeAuthModal(){
   document.getElementById("modal-auth").style.display = "none";
 }
+function switchAuthTab(tab){
+  ["login","signup","forgot","sent"].forEach(function(t){
+    var el = document.getElementById("auth-step-"+t);
+    if (el) el.style.display = (t === tab) ? "" : "none";
+  });
+  var tl = document.getElementById("tab-login");
+  var ts = document.getElementById("tab-signup");
+  if (tl && ts){
+    if (tab === "signup"){
+      tl.style.borderBottomColor = "transparent"; tl.style.color = "#666"; tl.style.fontWeight = "400";
+      ts.style.borderBottomColor = "var(--bleu-marine)"; ts.style.color = "var(--bleu-marine)"; ts.style.fontWeight = "600";
+    } else {
+      tl.style.borderBottomColor = "var(--bleu-marine)"; tl.style.color = "var(--bleu-marine)"; tl.style.fontWeight = "600";
+      ts.style.borderBottomColor = "transparent"; ts.style.color = "#666"; ts.style.fontWeight = "400";
+    }
+  }
+  if (window.lucide) lucide.createIcons();
+}
 
-async function sendMagicLink(ev){
+async function signInWithPassword(ev){
   ev.preventDefault();
-  const email = document.getElementById("auth-email").value.trim();
-  if (!email) return false;
-  const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.origin + window.location.pathname } });
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value;
+  if (!email || !password) return false;
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error){
+    const msg = (error.message === "Invalid login credentials") ? "Email ou mot de passe incorrect" : error.message;
+    showToast("Erreur : " + msg); return false;
+  }
+  closeAuthModal();
+  showToast("Connecté ✓");
+  return false;
+}
+
+async function signUpWithPassword(ev){
+  ev.preventDefault();
+  const email = document.getElementById("signup-email").value.trim();
+  const password = document.getElementById("signup-password").value;
+  const prenom = document.getElementById("signup-prenom").value.trim();
+  const nom = document.getElementById("signup-nom").value.trim();
+  if (!email || !password || !prenom || !nom) return false;
+  const { error } = await sb.auth.signUp({
+    email: email, password: password,
+    options: { data: { prenom: prenom, nom: nom }, emailRedirectTo: window.location.origin + window.location.pathname }
+  });
   if (error){ showToast("Erreur : " + error.message); return false; }
-  document.getElementById("auth-step-login").style.display = "none";
-  document.getElementById("auth-step-sent").style.display = "";
-  document.getElementById("auth-sent-to").textContent = email;
+  switchAuthTab("sent");
+  return false;
+}
+
+async function resetPassword(ev){
+  ev.preventDefault();
+  const email = document.getElementById("forgot-email").value.trim();
+  if (!email) return false;
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + window.location.pathname });
+  if (error){ showToast("Erreur : " + error.message); return false; }
+  switchAuthTab("sent");
   return false;
 }
 
