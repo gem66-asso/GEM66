@@ -485,7 +485,41 @@
 .auth-btn{width:100%;padding:.85rem 1.5rem;border:none;border-radius:999px;background:var(--vert,#22a942);color:#fff;font-weight:600;font-size:1rem;cursor:pointer}
 .auth-btn:hover{background:var(--vert-fonce,#1a8a35)}
 #account-btn,#admin-btn{cursor:pointer}
-  </style>
+    /* ===== AUTH MODAL ===== */
+  .auth-card{ max-width:460px !important; padding:2.2rem 2.2rem 1.8rem !important; }
+  .auth-card input[type="email"],
+  .auth-card input[type="password"],
+  .auth-card input[type="text"]{
+    padding:.85rem 1rem !important;
+    border:1.5px solid #d8dee5 !important;
+    border-radius:.6rem !important;
+    font-size:1em;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .auth-card input[type="email"]:focus,
+  .auth-card input[type="password"]:focus,
+  .auth-card input[type="text"]:focus{
+    outline:none;
+    border-color:var(--bleu-marine) !important;
+    box-shadow:0 0 0 3px rgba(28,45,79,.12);
+  }
+  .btn-auth{
+    width:100%;
+    justify-content:center;
+    padding:1.05rem 1.5rem !important;
+    font-size:1.05rem !important;
+    font-weight:700;
+    border-radius:.85rem !important;
+    border:none;
+    cursor:pointer;
+    margin-top:.6rem;
+    letter-spacing:.01em;
+  }
+  .auth-card .btn-auth.btn-primary{ background:var(--vert); color:#fff; }
+  .auth-card .btn-auth.btn-primary:hover{ background:var(--vert-fonce); transform:translateY(-2px); box-shadow:0 8px 24px rgba(34,169,66,.28); }
+  .auth-card form{ gap:1rem !important; }
+  .auth-card label{ font-size:.92rem; color:var(--bleu-marine); }
+</style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -801,7 +835,7 @@
           Mot de passe
           <input type="password" id="login-password" required placeholder="••••••••" autocomplete="current-password" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
         </label>
-        <button type="submit" class="cta" style="margin-top:.5em;justify-content:center">
+        <button type="submit" class="btn btn-primary btn-auth" style="margin-top:.5em;justify-content:center">
           <i data-lucide="log-in" class="icon"></i> Se connecter
         </button>
         <a href="#" onclick="switchAuthTab('forgot');return false" style="text-align:center;color:var(--bleu-marine);font-size:.9em;text-decoration:underline">Mot de passe oublié ?</a>
@@ -828,7 +862,7 @@
           Mot de passe (min. 6 caractères)
           <input type="password" id="signup-password" required minlength="6" placeholder="••••••••" autocomplete="new-password" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
         </label>
-        <button type="submit" class="cta" style="margin-top:.5em;justify-content:center">
+        <button type="submit" class="btn btn-primary btn-auth" style="margin-top:.5em;justify-content:center">
           <i data-lucide="user-plus" class="icon"></i> Créer mon compte
         </button>
       </form>
@@ -842,7 +876,7 @@
           Email
           <input type="email" id="forgot-email" required placeholder="votre@email.fr" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
         </label>
-        <button type="submit" class="cta" style="margin-top:.5em;justify-content:center">
+        <button type="submit" class="btn btn-primary btn-auth" style="margin-top:.5em;justify-content:center">
           <i data-lucide="mail" class="icon"></i> Envoyer le lien
         </button>
         <a href="#" onclick="switchAuthTab('login');return false" style="text-align:center;color:var(--bleu-marine);font-size:.9em;text-decoration:underline">← Retour à la connexion</a>
@@ -867,7 +901,7 @@
           Confirmer le mot de passe
           <input type="password" id="newpass-confirm" required minlength="6" placeholder="••••••••" autocomplete="new-password" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
         </label>
-        <button type="submit" class="cta" style="margin-top:.5em;justify-content:center">
+        <button type="submit" class="btn btn-primary btn-auth" style="margin-top:.5em;justify-content:center">
           <i data-lucide="check" class="icon"></i> Enregistrer
         </button>
       </form>
