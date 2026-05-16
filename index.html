@@ -854,6 +854,24 @@
       <h3 style="color:var(--bleu-marine)">Email envoyé !</h3>
       <p>Vérifie ta boîte mail (et tes spams) et clique sur le lien que nous venons de t'envoyer.</p>
     </div>
+
+    <div id="auth-step-newpass" style="display:none">
+      <h3 style="margin-top:0;color:var(--bleu-marine)">Définir un nouveau mot de passe</h3>
+      <p style="color:#555;margin-bottom:1.2em">Choisis ton nouveau mot de passe (min. 6 caractères).</p>
+      <form onsubmit="submitNewPassword(event)" style="display:flex;flex-direction:column;gap:.8em">
+        <label style="display:flex;flex-direction:column;gap:.3em;font-weight:500">
+          Nouveau mot de passe
+          <input type="password" id="newpass-password" required minlength="6" placeholder="••••••••" autocomplete="new-password" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:.3em;font-weight:500">
+          Confirmer le mot de passe
+          <input type="password" id="newpass-confirm" required minlength="6" placeholder="••••••••" autocomplete="new-password" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
+        </label>
+        <button type="submit" class="cta" style="margin-top:.5em;justify-content:center">
+          <i data-lucide="check" class="icon"></i> Enregistrer
+        </button>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -1121,7 +1139,7 @@ function closeAuthModal(){
   document.getElementById("modal-auth").style.display = "none";
 }
 function switchAuthTab(tab){
-  ["login","signup","forgot","sent"].forEach(function(t){
+  ["login","signup","forgot","sent","newpass"].forEach(function(t){
     var el = document.getElementById("auth-step-"+t);
     if (el) el.style.display = (t === tab) ? "" : "none";
   });
@@ -1179,6 +1197,20 @@ async function resetPassword(ev){
   switchAuthTab("sent");
   return false;
 }
+async function submitNewPassword(ev){
+  ev.preventDefault();
+  const pw = document.getElementById("newpass-password").value;
+  const cf = document.getElementById("newpass-confirm").value;
+  if (!pw || pw.length < 6){ showToast("Mot de passe trop court (min. 6 caractères)"); return false; }
+  if (pw !== cf){ showToast("Les mots de passe ne correspondent pas"); return false; }
+  const { error } = await sb.auth.updateUser({ password: pw });
+  if (error){ showToast("Erreur : " + error.message); return false; }
+  if (history.replaceState) history.replaceState(null, "", window.location.pathname + window.location.search);
+  closeAuthModal();
+  showToast("Mot de passe mis à jour ✓");
+  return false;
+}
+
 
 async function signOutUser(){ await sb.auth.signOut(); }
 
@@ -1232,7 +1264,17 @@ document.addEventListener("click", function(e){
 
 sb.auth.onAuthStateChange(async (event, session) => {
   await refreshUser();
+  if (event === "PASSWORD_RECOVERY"){
+    openAuthModal();
+    switchAuthTab("newpass");
+    return;
+  }
   if (event === "SIGNED_IN" && session){
+    if (window.location.hash.includes("type=recovery")){
+      openAuthModal();
+      switchAuthTab("newpass");
+      return;
+    }
     const raw = localStorage.getItem("gem66_intent");
     if (raw){
       try { await completePendingInscription(JSON.parse(raw), session.user); } catch(e){ console.error(e); }
@@ -1241,6 +1283,7 @@ sb.auth.onAuthStateChange(async (event, session) => {
     closeAuthModal();
   }
 });
+;
 
 async function completePendingInscription(intent, user){
   const upd = {};
