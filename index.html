@@ -842,6 +842,14 @@
           <i data-lucide="log-in" class="icon"></i> Se connecter
         </button>
         <a href="#" onclick="switchAuthTab('forgot');return false" style="text-align:center;color:var(--bleu-marine);font-size:.9em;text-decoration:underline">Mot de passe oublié ?</a>
+        <div style="display:flex;align-items:center;gap:.6rem;margin:.4rem 0;color:#999;font-size:.85em">
+          <div style="flex:1;height:1px;background:#ddd"></div>
+          <span>ou</span>
+          <div style="flex:1;height:1px;background:#ddd"></div>
+        </div>
+        <button type="button" onclick="sendMagicLink()" id="magic-link-btn" class="btn btn-auth" style="background:#fff;color:var(--bleu-marine);border:1.5px solid var(--bleu-marine);justify-content:center">
+          <i data-lucide="mail" class="icon"></i> Recevoir un lien de connexion
+        </button>
       </form>
     </div>
 
@@ -1239,7 +1247,29 @@ function setAuthError(name, msg){
   return false;
 }
 
-async function signUpWithPassword(ev){
+async function sendMagicLink(){
+        setAuthError("login", "");
+        const email = document.getElementById("login-email").value.trim();
+        if (!email){ setAuthError("login", "Saisissez votre email pour recevoir un lien."); return false; }
+        const btn = document.getElementById("magic-link-btn");
+        if (btn){ btn.disabled = true; btn.dataset.lbl = btn.innerHTML; btn.innerHTML = "Envoi en cours..."; }
+        const { error } = await sb.auth.signInWithOtp({
+          email: email,
+          options: { emailRedirectTo: window.location.origin + window.location.pathname }
+        });
+        if (btn){ btn.disabled = false; if (btn.dataset.lbl) btn.innerHTML = btn.dataset.lbl; if (window.lucide) lucide.createIcons(); }
+        if (error){
+          let m = error.message;
+          if (m && m.toLowerCase().includes("rate")) m = "Trop de demandes. Patientez quelques minutes (Supabase limite à quelques emails/heure).";
+          else if (m && m.includes("security purposes")) m = "Patientez environ 1 minute avant de redemander un lien.";
+          setAuthError("login", m);
+          return false;
+        }
+        setAuthInfo("login", "✓ Lien envoyé. Vérifiez votre boîte mail (et le dossier spam !). Le lien expire dans 1 heure.");
+        return false;
+      }
+      
+      async function signUpWithPassword(ev){
   ev.preventDefault();
   setAuthError("signup", "");
   const email = document.getElementById("signup-email").value.trim();
