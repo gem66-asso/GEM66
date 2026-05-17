@@ -519,6 +519,8 @@
   .auth-card .btn-auth.btn-primary:hover{ background:var(--vert-fonce); transform:translateY(-2px); box-shadow:0 8px 24px rgba(34,169,66,.28); }
   .auth-card form{ gap:1rem !important; }
   .auth-card label{ font-size:.92rem; color:var(--bleu-marine); }
+    .auth-error{ background:#fdecea; color:#a01515; border:1px solid #f5c6c2; padding:.7rem .9rem; border-radius:.55rem; font-size:.92rem; margin:.2rem 0 -.2rem; line-height:1.35; }
+    .auth-info{ background:#e8f4fd; color:#0b4a82; border:1px solid #bfdcf3; padding:.7rem .9rem; border-radius:.55rem; font-size:.92rem; margin:.2rem 0 -.2rem; line-height:1.35; }
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -835,6 +837,7 @@
           Mot de passe
           <input type="password" id="login-password" required placeholder="••••••••" autocomplete="current-password" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
         </label>
+        <div class="auth-error" id="login-error" style="display:none"></div>
         <button type="submit" class="btn btn-primary btn-auth" style="margin-top:.5em;justify-content:center">
           <i data-lucide="log-in" class="icon"></i> Se connecter
         </button>
@@ -862,6 +865,7 @@
           Mot de passe (min. 6 caractères)
           <input type="password" id="signup-password" required minlength="6" placeholder="••••••••" autocomplete="new-password" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
         </label>
+        <div class="auth-error" id="signup-error" style="display:none"></div>
         <button type="submit" class="btn btn-primary btn-auth" style="margin-top:.5em;justify-content:center">
           <i data-lucide="user-plus" class="icon"></i> Créer mon compte
         </button>
@@ -876,6 +880,7 @@
           Email
           <input type="email" id="forgot-email" required placeholder="votre@email.fr" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
         </label>
+        <div class="auth-error" id="forgot-error" style="display:none"></div>
         <button type="submit" class="btn btn-primary btn-auth" style="margin-top:.5em;justify-content:center">
           <i data-lucide="mail" class="icon"></i> Envoyer le lien
         </button>
@@ -901,6 +906,7 @@
           Confirmer le mot de passe
           <input type="password" id="newpass-confirm" required minlength="6" placeholder="••••••••" autocomplete="new-password" style="padding:.7em;border:1px solid #ccc;border-radius:.4em;font-size:1em">
         </label>
+        <div class="auth-error" id="newpass-error" style="display:none"></div>
         <button type="submit" class="btn btn-primary btn-auth" style="margin-top:.5em;justify-content:center">
           <i data-lucide="check" class="icon"></i> Enregistrer
         </button>
@@ -1172,7 +1178,7 @@ function openAuthModal(){
 function closeAuthModal(){
   document.getElementById("modal-auth").style.display = "none";
 }
-function switchAuthTab(tab){
+function switchAuthTab(tab){ if (typeof clearAuthErrors === "function") clearAuthErrors();
   ["login","signup","forgot","sent","newpass"].forEach(function(t){
     var el = document.getElementById("auth-step-"+t);
     if (el) el.style.display = (t === tab) ? "" : "none";
@@ -1191,15 +1197,42 @@ function switchAuthTab(tab){
   if (window.lucide) lucide.createIcons();
 }
 
-async function signInWithPassword(ev){
+function setAuthError(name, msg){
+        const el = document.getElementById(name + "-error");
+        if (!el) return;
+        el.textContent = msg;
+        el.style.display = msg ? "block" : "none";
+        el.className = "auth-error";
+      }
+      function setAuthInfo(name, msg){
+        const el = document.getElementById(name + "-error");
+        if (!el) return;
+        el.textContent = msg;
+        el.style.display = msg ? "block" : "none";
+        el.className = "auth-info";
+      }
+      function clearAuthErrors(){
+        ["login","signup","forgot","newpass"].forEach(n => {
+          const el = document.getElementById(n + "-error");
+          if (el){ el.textContent = ""; el.style.display = "none"; }
+        });
+      }
+      async function signInWithPassword(ev){
   ev.preventDefault();
+  setAuthError("login", "");
   const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value;
-  if (!email || !password) return false;
+  if (!email || !password){ setAuthError("login", "Merci de renseigner email et mot de passe."); return false; }
+  const btn = ev.target ? ev.target.querySelector("button[type='submit']") : null;
+  if (btn){ btn.disabled = true; btn.dataset.lbl = btn.innerHTML; btn.innerHTML = "Connexion..."; }
   const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (btn){ btn.disabled = false; if (btn.dataset.lbl) btn.innerHTML = btn.dataset.lbl; if (window.lucide) lucide.createIcons(); }
   if (error){
-    const msg = (error.message === "Invalid login credentials") ? "Email ou mot de passe incorrect" : error.message;
-    toast("Erreur : " + msg); return false;
+    let m = error.message;
+    if (m === "Invalid login credentials") m = "Email ou mot de passe incorrect. Si vous n'avez jamais défini de mot de passe (ancien compte par lien magique), utilisez \"Mot de passe oublié ?\" pour en créer un.";
+    else if (m && m.toLowerCase().includes("email not confirmed")) m = "Email pas encore confirmé. Vérifiez votre boîte mail.";
+    setAuthError("login", m);
+    return false;
   }
   closeAuthModal();
   toast("Connecté ✓");
@@ -1208,37 +1241,60 @@ async function signInWithPassword(ev){
 
 async function signUpWithPassword(ev){
   ev.preventDefault();
+  setAuthError("signup", "");
   const email = document.getElementById("signup-email").value.trim();
   const password = document.getElementById("signup-password").value;
   const prenom = document.getElementById("signup-prenom").value.trim();
   const nom = document.getElementById("signup-nom").value.trim();
-  if (!email || !password || !prenom || !nom) return false;
+  if (!email || !password || !prenom || !nom){ setAuthError("signup", "Tous les champs sont obligatoires."); return false; }
+  if (password.length < 6){ setAuthError("signup", "Le mot de passe doit faire au moins 6 caractères."); return false; }
+  const btn = ev.target ? ev.target.querySelector("button[type='submit']") : null;
+  if (btn){ btn.disabled = true; btn.dataset.lbl = btn.innerHTML; btn.innerHTML = "Création en cours..."; }
   const { error } = await sb.auth.signUp({
     email: email, password: password,
     options: { data: { prenom: prenom, nom: nom }, emailRedirectTo: window.location.origin + window.location.pathname }
   });
-  if (error){ toast("Erreur : " + error.message); return false; }
+  if (btn){ btn.disabled = false; if (btn.dataset.lbl) btn.innerHTML = btn.dataset.lbl; if (window.lucide) lucide.createIcons(); }
+  if (error){
+    let m = error.message;
+    if (m && m.toLowerCase().includes("already registered")) m = "Cet email a déjà un compte. Essayez de vous connecter ou utilisez Mot de passe oublié.";
+    setAuthError("signup", m);
+    return false;
+  }
   switchAuthTab("sent");
   return false;
 }
 
 async function resetPassword(ev){
   ev.preventDefault();
+  setAuthError("forgot", "");
   const email = document.getElementById("forgot-email").value.trim();
-  if (!email) return false;
+  if (!email){ setAuthError("forgot", "Merci de saisir votre email."); return false; }
+  const btn = ev.target ? ev.target.querySelector("button[type='submit']") : null;
+  if (btn){ btn.disabled = true; btn.dataset.lbl = btn.innerHTML; btn.innerHTML = "Envoi en cours..."; }
   const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + window.location.pathname });
-  if (error){ toast("Erreur : " + error.message); return false; }
+  if (btn){ btn.disabled = false; if (btn.dataset.lbl) btn.innerHTML = btn.dataset.lbl; if (window.lucide) lucide.createIcons(); }
+  if (error){
+    let m = error.message;
+    if (m && m.toLowerCase().includes("rate")) m = "Trop de demandes. Patientez 1 heure avant de réessayer.";
+    setAuthError("forgot", m);
+    return false;
+  }
   switchAuthTab("sent");
   return false;
 }
 async function submitNewPassword(ev){
   ev.preventDefault();
+  setAuthError("newpass", "");
   const pw = document.getElementById("newpass-password").value;
   const cf = document.getElementById("newpass-confirm").value;
-  if (!pw || pw.length < 6){ toast("Mot de passe trop court (min. 6 caractères)"); return false; }
-  if (pw !== cf){ toast("Les mots de passe ne correspondent pas"); return false; }
+  if (!pw || pw.length < 6){ setAuthError("newpass", "Mot de passe trop court (min. 6 caractères)."); return false; }
+  if (pw !== cf){ setAuthError("newpass", "Les mots de passe ne correspondent pas."); return false; }
+  const btn = ev.target ? ev.target.querySelector("button[type='submit']") : null;
+  if (btn){ btn.disabled = true; btn.dataset.lbl = btn.innerHTML; btn.innerHTML = "Enregistrement..."; }
   const { error } = await sb.auth.updateUser({ password: pw });
-  if (error){ toast("Erreur : " + error.message); return false; }
+  if (btn){ btn.disabled = false; if (btn.dataset.lbl) btn.innerHTML = btn.dataset.lbl; if (window.lucide) lucide.createIcons(); }
+  if (error){ setAuthError("newpass", "Erreur : " + error.message); return false; }
   if (history.replaceState) history.replaceState(null, "", window.location.pathname + window.location.search);
   closeAuthModal();
   toast("Mot de passe mis à jour ✓");
