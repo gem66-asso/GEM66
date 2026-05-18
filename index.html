@@ -1233,7 +1233,7 @@ function setAuthError(name, msg){
   if (!email || !password){ setAuthError("login", "Merci de renseigner email et mot de passe."); return false; }
   const btn = ev.target ? ev.target.querySelector("button[type='submit']") : null;
   if (btn){ btn.disabled = true; btn.dataset.lbl = btn.innerHTML; btn.innerHTML = "Connexion..."; }
-  const { error } = await sb.auth.signInWithPassword({ email, password });
+  const _resp = await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email,password})});const _data = await _resp.json();const error = _resp.ok ? null : { message: _data.error_description || _data.msg || _data.error || 'Erreur' };if(_resp.ok){const _sess={access_token:_data.access_token,token_type:_data.token_type,expires_in:_data.expires_in,expires_at:Math.floor(Date.now()/1000)+_data.expires_in,refresh_token:_data.refresh_token,user:_data.user};localStorage.setItem('sb-rranwsgwrgptpanalajv-auth-token',JSON.stringify(_sess));}
   if (btn){ btn.disabled = false; if (btn.dataset.lbl) btn.innerHTML = btn.dataset.lbl; if (window.lucide) lucide.createIcons(); }
   if (error){
     let m = error.message;
@@ -1242,7 +1242,7 @@ function setAuthError(name, msg){
     setAuthError("login", m);
     return false;
   }
-  closeAuthModal();
+  setTimeout(()=>location.reload(),200); closeAuthModal();
   toast("Connecté ✓");
   return false;
 }
