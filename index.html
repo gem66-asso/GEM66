@@ -7,7 +7,7 @@
 <title>Guérir en Mer — Sorties en mer pour soignants</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bleu-marine:#1c2d4f;
@@ -521,6 +521,19 @@
   .auth-card label{ font-size:.92rem; color:var(--bleu-marine); }
     .auth-error{ background:#fdecea; color:#a01515; border:1px solid #f5c6c2; padding:.7rem .9rem; border-radius:.55rem; font-size:.92rem; margin:.2rem 0 -.2rem; line-height:1.35; }
     .auth-info{ background:#e8f4fd; color:#0b4a82; border:1px solid #bfdcf3; padding:.7rem .9rem; border-radius:.55rem; font-size:.92rem; margin:.2rem 0 -.2rem; line-height:1.35; }
+
+/* === GEM Official branding === */
+header{background:#1c2d4f !important;box-shadow:0 2px 12px rgba(0,0,0,0.15) !important}
+.logo-mark{width:54px !important;height:54px !important;border-radius:0 !important;background:url('https://guerirenmer.com/wp-content/uploads/2022/12/logo-min.png') center/contain no-repeat !important;overflow:visible !important}
+.logo-mark svg{display:none !important}
+.logo-text strong{font-family:'Montserrat',sans-serif !important;font-weight:300 !important;font-size:1.2rem !important;color:#fff !important;letter-spacing:3px !important;text-transform:uppercase !important}
+.logo-text span{color:rgba(255,255,255,0.7) !important}
+.nav-link{color:rgba(255,255,255,0.85) !important;background:transparent !important}
+.nav-link:hover{background:rgba(255,255,255,0.1) !important;color:#fff !important}
+.nav-link.active{background:rgba(255,255,255,0.15) !important;color:#fff !important}
+.burger{color:#fff !important}
+#auth-trigger,.account-trigger,.icon-btn{color:#fff !important}
+@media (max-width:768px){.nav-links{background:#1c2d4f !important}}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
