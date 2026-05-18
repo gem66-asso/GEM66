@@ -1332,7 +1332,7 @@ async function submitNewPassword(ev){
 }
 
 
-async function signOutUser(){ await sb.auth.signOut(); }
+async function signOutUser(){ try{ localStorage.removeItem('sb-rranwsgwrgptpanalajv-auth-token'); }catch(e){} currentUser=null; currentProfile=null; updateAccountUI(); toast('Déconnecté ✓'); setTimeout(()=>location.reload(),300); }
 
 async function refreshUser(){
   let session=null;try{const _t=localStorage.getItem('sb-rranwsgwrgptpanalajv-auth-token');if(_t){const _p=JSON.parse(_t);if(_p.expires_at>Math.floor(Date.now()/1000))session=_p;}}catch(e){}
