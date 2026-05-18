@@ -971,7 +971,7 @@ let sorties = [];
 
 const SUPABASE_URL = "https://rranwsgwrgptpanalajv.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyYW53c2d3cmdwdHBhbmFsYWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3ODI1NzAsImV4cCI6MjA5NDM1ODU3MH0.CSOqUNkH_p-0KeUEoSE6fxJgWGeaDUFIkSt9YlKJwu8";
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, { auth: { lock: async (n,t,fn)=>await fn() } });
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, { auth: { lock: async (n,t,fn)=>await fn(), autoRefreshToken: false } });
 window.sb = sb;
 
 const MOIS_FR = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
