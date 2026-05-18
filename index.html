@@ -1335,10 +1335,10 @@ async function submitNewPassword(ev){
 async function signOutUser(){ await sb.auth.signOut(); }
 
 async function refreshUser(){
-  const { data: { session } } = await sb.auth.getSession();
+  let session=null;try{const _t=localStorage.getItem('sb-rranwsgwrgptpanalajv-auth-token');if(_t){const _p=JSON.parse(_t);if(_p.expires_at>Math.floor(Date.now()/1000))session=_p;}}catch(e){}
   currentUser = session ? session.user : null;
   if (currentUser){
-    const { data: p } = await sb.from("profiles").select("*").eq("id", currentUser.id).single();
+    let p=null;try{const _pr=await fetch(SUPABASE_URL+"/rest/v1/profiles?select=*&id=eq."+encodeURIComponent(currentUser.id),{headers:{apikey:SUPABASE_ANON,Authorization:"Bearer "+session.access_token,Accept:"application/vnd.pgrst.object+json"}});if(_pr.ok)p=await _pr.json();}catch(e){}
     currentProfile = p;
   } else { currentProfile = null; }
   updateAccountUI();
