@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#1c2d4f"/>
+  <path d="M 32 380 Q 128 340 192 380 T 320 380 T 480 380 L 480 480 L 32 480 Z" fill="#22a942"/>
+  <path d="M 32 410 Q 128 370 192 410 T 320 410 T 480 410 L 480 480 L 32 480 Z" fill="#1a8a35" opacity="0.6"/>
+  <text x="256" y="240" text-anchor="middle" font-family="Georgia,serif" font-weight="bold" font-size="140" fill="white">GEM</text>
+  <text x="256" y="320" text-anchor="middle" font-family="Georgia,serif" font-size="80" fill="white" opacity="0.85">66</text>
+</svg>
