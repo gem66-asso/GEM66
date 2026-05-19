@@ -1,0 +1,14 @@
+{
+  "name": "Guérir en Mer 66",
+  "short_name": "GEM 66",
+  "description": "Sorties en mer pour soignants — antenne GEM 66",
+  "start_url": "/GEM66/",
+  "scope": "/GEM66/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f7fa",
+  "theme_color": "#1c2d4f",
+  "icons": [
+    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}
+  ]
+}
