@@ -662,11 +662,6 @@ header{background:#1c2d4f !important;box-shadow:0 2px 12px rgba(0,0,0,0.15) !imp
     <h2>Comment veux-tu participer ?</h2>
     <p class="section-intro">Choisis ton rôle. Tu verras tout de suite combien de places sont disponibles pour toi sur les prochaines sorties.</p>
 
-    <div class="notice-test">
-      <div class="notice-title"><i data-lucide="triangle-alert" class="icon"></i> Phase de test — inscriptions pas encore ouvertes</div>
-      Les inscriptions officielles pour la sortie du 13 juin ne sont pas encore ouvertes, et le <strong>paiement HelloAsso</strong> n'est donc pas encore actif. Tu peux quand même tester le formulaire et nous laisser tes coordonnées : on te recontactera dès que les inscriptions ouvriront pour finaliser ton inscription et le règlement. Merci de ton aide pour tester l'appli ! <i data-lucide="heart-handshake" class="icon"></i>
-    </div>
-
     <div class="role-picker">
       <div class="role-card" data-role="soignant" onclick="selectRole('soignant')">
         <div class="role-icon"><i data-lucide="stethoscope" class="icon"></i></div>
@@ -1096,8 +1091,8 @@ function sortieCardHTML(s){
   const fullS = s.inscrits >= s.places;
   const fullK = s.skippersInscrits >= s.skippersPlaces;
   const fullB = s.benevolesInscrits >= s.benevolesPlaces;
-  const pillTxt = s.statut === 'soon' ? 'Bientôt' : s.statut === 'full' ? 'Complet' : 'Inscriptions ouvertes';
-  const pillCls = s.statut === 'soon' ? 'pill-soon' : s.statut === 'full' ? 'pill-full' : 'pill-open';
+  const pillTxt = s.statut === 'open' ? 'Inscriptions ouvertes' : 'Inscriptions fermées';
+  const pillCls = s.statut === 'open' ? 'pill-open' : 'pill-soon';
 
   return [
     '<div class="sortie-card ' + s.statut + '" onclick="openSortie(' + s.id + ')">',
