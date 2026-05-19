@@ -1171,7 +1171,7 @@ function selectRole(role){
     if (f) f.style.display = (r === role) ? 'block' : 'none';
   });
   const cta = document.getElementById('inscription-cta');
-  if (cta) cta.style.display = 'block';
+  if (cta) cta.style.display = (role === 'soignant') ? 'block' : 'none';
   const titres = {
     soignant: 'Tu es soignant·e — bienvenue à bord',
     skipper:  'Tu es skipper — merci pour ton aide précieuse',
