@@ -6,9 +6,9 @@
   "scope": "/GEM66/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f5f7fa",
-  "theme_color": "#1c2d4f",
+  "background_color": "#1a2745",
+  "theme_color": "#1a2745",
   "icons": [
-    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}
+    {"src": "https://guerirenmer.com/wp-content/uploads/2022/12/logo-min.png", "sizes": "500x502", "type": "image/png", "purpose": "any"}
   ]
 }
