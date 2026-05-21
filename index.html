@@ -534,6 +534,28 @@ header{background:#1c2d4f !important;box-shadow:0 2px 12px rgba(0,0,0,0.15) !imp
 .burger{color:#fff !important}
 #auth-trigger,.account-trigger,.icon-btn{color:#fff !important}
 @media (max-width:768px){.nav-links{background:#1c2d4f !important}}
+
+  /* Bouton installation PWA + modale */
+  #install-fab{position:fixed;bottom:20px;right:20px;z-index:9998;background:#22a942;color:#fff;border:none;border-radius:50px;padding:14px 22px;font-size:16px;font-weight:600;font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer;display:none;align-items:center;gap:8px}
+  #install-fab:hover{background:#1a8a35}
+  #install-fab.show{display:inline-flex}
+  #install-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:flex-end;justify-content:center;padding:0}
+  #install-modal.show{display:flex}
+  #install-modal .imodal-card{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:600px;padding:24px 22px 28px;max-height:90vh;overflow-y:auto;font-family:inherit;color:#1c2d4f}
+  #install-modal h3{margin:0 0 8px;font-size:22px;color:#1c2d4f}
+  #install-modal .imodal-sub{color:#5a6b78;margin:0 0 18px;font-size:14px}
+  #install-modal .istep{display:flex;gap:12px;margin:14px 0;align-items:flex-start}
+  #install-modal .istep .inum{background:#1c2d4f;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:14px}
+  #install-modal .istep .itext{flex:1;line-height:1.5;font-size:15px;padding-top:3px}
+  #install-modal .istep .itext strong{color:#1c2d4f}
+  #install-modal .iclose{display:block;width:100%;margin-top:18px;background:#1c2d4f;color:#fff;border:none;padding:13px;border-radius:10px;font-size:16px;font-family:inherit;cursor:pointer;font-weight:600}
+  #install-modal .ishare{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:#0a7aff;color:#fff;border-radius:6px;font-size:18px;vertical-align:middle;margin:0 4px}
+  #install-modal .iwarn{background:#fff4d6;border-left:4px solid #f0a020;padding:10px 12px;margin:14px 0;border-radius:6px;font-size:13px;color:#7a5a15}
+  #install-modal .itabs{display:flex;gap:0;margin-bottom:18px;border-bottom:2px solid #eee}
+  #install-modal .itab{flex:1;padding:10px;background:none;border:none;font-family:inherit;font-size:15px;cursor:pointer;color:#5a6b78;font-weight:600;border-bottom:3px solid transparent;margin-bottom:-2px}
+  #install-modal .itab.active{color:#1c2d4f;border-bottom-color:#22a942}
+  #install-modal .ipanel{display:none}
+  #install-modal .ipanel.active{display:block}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -1547,5 +1569,69 @@ document.addEventListener('keydown', e => {
 });
 </script>
   <script>document.addEventListener("DOMContentLoaded",function(){if(window.lucide)lucide.createIcons();});</script>
+
+  <!-- Bouton + modale d'installation PWA -->
+  <button id="install-fab" type="button" aria-label="Installer l'application">📲 Installer l'app</button>
+
+  <div id="install-modal" role="dialog" aria-modal="true">
+    <div class="imodal-card">
+      <h3>📲 Installer l'app GEM 66</h3>
+      <p class="imodal-sub">Choisis ton téléphone ci-dessous :</p>
+      <div class="itabs">
+        <button class="itab active" data-tab="ios" type="button">iPhone</button>
+        <button class="itab" data-tab="android" type="button">Android</button>
+      </div>
+      <div class="ipanel active" id="ipanel-ios">
+        <div class="iwarn">⚠️ Tu dois utiliser <strong>Safari</strong> (le navigateur bleu d'Apple). L'installation ne fonctionne pas dans Chrome ni dans Instagram/Facebook.</div>
+        <div class="istep"><div class="inum">1</div><div class="itext">Ouvre <strong>Safari</strong> et va sur <strong>gem66-asso.github.io/GEM66</strong></div></div>
+        <div class="istep"><div class="inum">2</div><div class="itext">Appuie sur l'icône <span class="ishare">⬆</span> <strong>Partager</strong> en bas de l'écran (au milieu)</div></div>
+        <div class="istep"><div class="inum">3</div><div class="itext">Fais défiler la liste et tape sur <strong>"Sur l'écran d'accueil"</strong></div></div>
+        <div class="istep"><div class="inum">4</div><div class="itext">Appuie sur <strong>"Ajouter"</strong> en haut à droite</div></div>
+        <div class="istep"><div class="inum">5</div><div class="itext">L'icône <strong>GEM 66</strong> apparaît sur ton écran d'accueil 🎉</div></div>
+      </div>
+      <div class="ipanel" id="ipanel-android">
+        <div class="istep"><div class="inum">1</div><div class="itext">Ouvre <strong>Chrome</strong> et va sur <strong>gem66-asso.github.io/GEM66</strong></div></div>
+        <div class="istep"><div class="inum">2</div><div class="itext">Tape sur les <strong>3 points ⋮</strong> en haut à droite</div></div>
+        <div class="istep"><div class="inum">3</div><div class="itext">Tape sur <strong>"Installer l'application"</strong> (ou "Ajouter à l'écran d'accueil")</div></div>
+        <div class="istep"><div class="inum">4</div><div class="itext">Confirme avec <strong>"Installer"</strong></div></div>
+      </div>
+      <button class="iclose" type="button" id="install-modal-close">Fermer</button>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var deferredPrompt = null;
+    var fab = document.getElementById('install-fab');
+    var modal = document.getElementById('install-modal');
+    var closeBtn = document.getElementById('install-modal-close');
+    var ua = navigator.userAgent || '';
+    var isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+    var isAndroid = /Android/.test(ua);
+    var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (isStandalone) return;
+    fab.classList.add('show');
+    function setTab(name){
+      document.querySelectorAll('#install-modal .itab').forEach(function(b){ b.classList.toggle('active', b.dataset.tab === name); });
+      document.querySelectorAll('#install-modal .ipanel').forEach(function(p){ p.classList.toggle('active', p.id === 'ipanel-' + name); });
+    }
+    if (isAndroid) setTab('android'); else setTab('ios');
+    document.querySelectorAll('#install-modal .itab').forEach(function(btn){
+      btn.addEventListener('click', function(){ setTab(btn.dataset.tab); });
+    });
+    window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; });
+    fab.addEventListener('click', function(){
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(){ deferredPrompt = null; fab.classList.remove('show'); });
+        return;
+      }
+      modal.classList.add('show');
+    });
+    closeBtn.addEventListener('click', function(){ modal.classList.remove('show'); });
+    modal.addEventListener('click', function(e){ if (e.target === modal) modal.classList.remove('show'); });
+    window.addEventListener('appinstalled', function(){ fab.classList.remove('show'); modal.classList.remove('show'); });
+  })();
+  </script>
 </body>
 </html>
