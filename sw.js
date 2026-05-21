@@ -1,5 +1,5 @@
 // Service Worker GEM 66 — cache simple pour mode hors-ligne
-const CACHE_NAME = 'gem66-v1';
+const CACHE_NAME = 'gem66-v2';
 const CORE_ASSETS = [
   '/GEM66/',
   '/GEM66/index.html',
