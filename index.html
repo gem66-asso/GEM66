@@ -747,6 +747,11 @@ header{background:#1c2d4f !important;box-shadow:0 2px 12px rgba(0,0,0,0.15) !imp
           </select>
         </div>
       </div>
+      <div id="soignant-helloasso-block" style="display:none;background:#fff7e8;border:1px solid #f3d28a;border-radius:8px;padding:12px;margin:8px 0">
+        <p style="margin:0 0 .6em 0;font-weight:600;color:#7a4a00">Etape 2 : paye ta place sur HelloAsso</p>
+        <p style="margin:0 0 .8em 0;font-size:.92em;color:#555">Clique pour etre redirige vers HelloAsso, paye en ligne, puis reviens ici et soumets le formulaire pour finaliser ton inscription.</p>
+        <a id="soignant-helloasso-link" href="#" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:.4em">Payer ma place sur HelloAsso</a>
+      </div>
       <label class="form-rgpd"><input type="checkbox" name="rgpd" required> J'accepte que mes informations soient utilisées par GEM66 antenne 66 pour gérer mon inscription. Aucun partage à des tiers.</label>
       <div class="form-actions">
         <button type="submit" class="btn btn-primary"><i data-lucide="mail" class="icon"></i> Envoyer mes renseignements</button>
@@ -1220,6 +1225,15 @@ function selectRole(role){
     const f = document.getElementById('form-' + role);
     if (f) f.scrollIntoView({behavior:'smooth', block:'start'});
   }, 80);
+  try {
+    var champsByRole = {soignant:["inscrits","places"],skipper:["skippersInscrits","skippersPlaces"],benevole:["benevolesInscrits","benevolesPlaces"]};
+    var champ = champsByRole[role] || ["inscrits","places"];
+    var dispo = (window.sorties || []).filter(function(s){return s[champ[0]]<s[champ[1]] && s.statut==="open";});
+    var cibleSel = dispo[0];
+    var blk = document.getElementById(role+"-helloasso-block");
+    var lnk = document.getElementById(role+"-helloasso-link");
+    if (blk && lnk){ if (cibleSel && cibleSel.helloassoUrl){ lnk.href=cibleSel.helloassoUrl; blk.style.display=""; } else { blk.style.display="none"; } }
+  } catch(e){}
 }
 
 // === AUTH + INSCRIPTION (Supabase magic link) ===
@@ -1509,7 +1523,7 @@ async function submitInscription(ev, role){
   document.getElementById("auth-step-login").style.display = "none";
   document.getElementById("auth-step-sent").style.display = "";
   document.getElementById("auth-sent-to").textContent = d.email;
-  var hl = document.getElementById("auth-helloasso-link"); var hc = document.getElementById("helloasso-cta"); if (cible.helloassoUrl) { if (hl) hl.href = cible.helloassoUrl; if (hc) hc.style.display = ""; try { window.open(cible.helloassoUrl, "_blank"); } catch(e) {} } else { if (hc) hc.style.display = "none"; }
+  var hl = document.getElementById("auth-helloasso-link"); var hc = document.getElementById("helloasso-cta"); if (cible.helloassoUrl) { if (hl) hl.href = cible.helloassoUrl; if (hc) hc.style.display = ""; } else { if (hc) hc.style.display = "none"; }
   return false;
 }
 
