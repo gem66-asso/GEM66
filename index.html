@@ -944,6 +944,10 @@ header{background:#1c2d4f !important;box-shadow:0 2px 12px rgba(0,0,0,0.15) !imp
       <i data-lucide="mail-check" class="icon" style="width:48px;height:48px;color:var(--vert)"></i>
       <h3 style="color:var(--bleu-marine)">Email envoyé !</h3>
       <p>Vérifie ta boîte mail (et tes spams) et clique sur le lien que nous venons de t'envoyer.</p>
+      <div id="helloasso-cta" style="display:none;margin-top:1em;padding:1em;background:#fff4e5;border:1px solid #f5a623;border-radius:8px;text-align:left">
+        <p style="margin:0 0 .5em 0;color:#7a4a00"><strong>Important :</strong> ton inscription ne sera valide qu'après paiement sur HelloAsso.</p>
+        <a id="auth-helloasso-link" href="#" target="_blank" rel="noopener" class="btn primary" style="display:inline-block;margin-top:.3em">Payer ma place sur HelloAsso</a>
+      </div>
     </div>
 
     <div id="auth-step-newpass" style="display:none">
@@ -1044,7 +1048,7 @@ function mapSortie(row){
     benevolesPlaces: row.capacite_benevoles,
     benevolesInscrits: row.nb_benevoles || 0,
     statut: statutUI,
-    helloassoUrl: ""
+    helloassoUrl: row.helloasso_url || ""
   };
 }
 
@@ -1488,7 +1492,8 @@ async function submitInscription(ev, role){
     telephone: d.telephone || "",
     profession: d.profession || "",
     message: Array.isArray(d.dispos) ? d.dispos.join(", ") : (d.dispos || d.message || ""),
-    sortie_id: cible.id
+    sortie_id: cible.id,
+    helloasso_url: cible.helloassoUrl || ""
   };
   localStorage.setItem("gem66_intent", JSON.stringify(intent));
   const { error } = await sb.auth.signInWithOtp({
@@ -1503,6 +1508,7 @@ async function submitInscription(ev, role){
   document.getElementById("auth-step-login").style.display = "none";
   document.getElementById("auth-step-sent").style.display = "";
   document.getElementById("auth-sent-to").textContent = d.email;
+  var hl = document.getElementById("auth-helloasso-link"); var hc = document.getElementById("helloasso-cta"); if (hl && hc) { if (cible.helloassoUrl) { hl.href = cible.helloassoUrl; hc.style.display = ""; } else { hc.style.display = "none"; } }
   return false;
 }
 
