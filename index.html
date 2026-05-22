@@ -539,6 +539,7 @@ header{background:#1c2d4f !important;box-shadow:0 2px 12px rgba(0,0,0,0.15) !imp
   #install-fab{position:fixed;bottom:20px;right:20px;z-index:9998;background:#22a942;color:#fff;border:none;border-radius:50px;padding:14px 22px;font-size:16px;font-weight:600;font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer;display:none;align-items:center;gap:8px}
   #install-fab:hover{background:#1a8a35}
   #install-fab.show{display:inline-flex}
+  @media (max-width:768px){#install-fab{padding:.4em .9em;font-size:.85em;bottom:14px;right:14px}section.view{padding-bottom:90px}main{padding-bottom:90px}}
   #install-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:flex-end;justify-content:center;padding:0}
   #install-modal.show{display:flex}
   #install-modal .imodal-card{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:600px;padding:24px 22px 28px;max-height:90vh;overflow-y:auto;font-family:inherit;color:#1c2d4f}
@@ -945,7 +946,7 @@ header{background:#1c2d4f !important;box-shadow:0 2px 12px rgba(0,0,0,0.15) !imp
       <h3 style="color:var(--bleu-marine)">Email envoyé !</h3>
       <p>Vérifie ta boîte mail (et tes spams) et clique sur le lien que nous venons de t'envoyer.</p>
       <div id="helloasso-cta" style="display:none;margin-top:1em;padding:1em;background:#fff4e5;border:1px solid #f5a623;border-radius:8px;text-align:left">
-        <p style="margin:0 0 .5em 0;color:#7a4a00"><strong>Important :</strong> ton inscription ne sera valide qu'après paiement sur HelloAsso.</p>
+        <p style="margin:0 0 .5em 0;color:#7a4a00"><strong>Pour valider ta place :</strong> un onglet HelloAsso vient de s'ouvrir pour le paiement. S'il ne s'est pas ouvert, clique sur le bouton ci-dessous.</p>
         <a id="auth-helloasso-link" href="#" target="_blank" rel="noopener" class="btn primary" style="display:inline-block;margin-top:.3em">Payer ma place sur HelloAsso</a>
       </div>
     </div>
@@ -1508,7 +1509,7 @@ async function submitInscription(ev, role){
   document.getElementById("auth-step-login").style.display = "none";
   document.getElementById("auth-step-sent").style.display = "";
   document.getElementById("auth-sent-to").textContent = d.email;
-  var hl = document.getElementById("auth-helloasso-link"); var hc = document.getElementById("helloasso-cta"); if (hl && hc) { if (cible.helloassoUrl) { hl.href = cible.helloassoUrl; hc.style.display = ""; } else { hc.style.display = "none"; } }
+  var hl = document.getElementById("auth-helloasso-link"); var hc = document.getElementById("helloasso-cta"); if (cible.helloassoUrl) { if (hl) hl.href = cible.helloassoUrl; if (hc) hc.style.display = ""; try { window.open(cible.helloassoUrl, "_blank"); } catch(e) {} } else { if (hc) hc.style.display = "none"; }
   return false;
 }
 
