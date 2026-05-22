@@ -1228,7 +1228,7 @@ function selectRole(role){
   try {
     var champsByRole = {soignant:["inscrits","places"],skipper:["skippersInscrits","skippersPlaces"],benevole:["benevolesInscrits","benevolesPlaces"]};
     var champ = champsByRole[role] || ["inscrits","places"];
-    var dispo = (window.sorties || []).filter(function(s){return s[champ[0]]<s[champ[1]] && s.statut==="open";});
+    var dispo = ((typeof sorties !== "undefined") ? sorties : []).filter(function(s){return s[champ[0]]<s[champ[1]] && s.statut==="open";});
     var cibleSel = dispo[0];
     var blk = document.getElementById(role+"-helloasso-block");
     var lnk = document.getElementById(role+"-helloasso-link");
@@ -1496,7 +1496,7 @@ async function submitInscription(ev, role){
   if (!d.email){ toast("Email requis"); return false; }
   // Trouve la prochaine sortie avec une place pour ce rôle
   const champ = role === "soignant" ? ["inscrits","places"] : (role === "skipper" ? ["skippersInscrits","skippersPlaces"] : ["benevolesInscrits","benevolesPlaces"]);
-  const dispo = (window.sorties || []).filter(s => s[champ[0]] < s[champ[1]] && s.statut === "open");
+  const dispo = (((typeof sorties !== "undefined") ? sorties : []) || []).filter(s => s[champ[0]] < s[champ[1]] && s.statut === "open");
   const cible = dispo[0];
   if (!cible){ toast("Aucune sortie disponible pour ce rôle pour le moment."); return false; }
   const intent = {
