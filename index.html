@@ -1156,7 +1156,7 @@ function sortieCardHTML(s){
 function roleStatHTML(role, label, inscrits, places, full){
   const pct = places > 0 ? Math.min(100, Math.round(inscrits/places*100)) : 0;
   return '<div class="role-stat ' + (full?'full':'') + '" data-role="' + role + '">' +
-    '<div class="role-stat-top"><span>' + label + '</span><strong>' + inscrits + '/' + places + '</strong></div>' +
+    '<div class="role-stat-top"><span>' + label + '</span><strong>' + inscrits + (places >= 99 ? '' : '/' + places) + '</strong></div>' +
     '<div class="role-bar"><span style="width:' + pct + '%"></span></div>' +
   '</div>';
 }
