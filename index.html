@@ -803,11 +803,6 @@ header{background:#1c2d4f !important;box-shadow:0 2px 12px rgba(0,0,0,0.15) !imp
       </div>
     </form>
 
-    <div id="inscription-cta" class="info-box" style="display:none">
-      <h3 id="inscription-titre">Tu es prêt·e à t'inscrire à une sortie ?</h3>
-      <p>Une fois tes renseignements envoyés, va dans l'onglet <strong>Sorties</strong> et inscris-toi en deux clics via HelloAsso. Gratuit, sécurisé, et confidentiel.</p>
-      <button class="btn btn-primary" onclick="showView('sorties')">Voir le calendrier →</button>
-    </div>
 
     <div class="info-box" style="margin-top:1.6rem;border-left-color:var(--turquoise)">
       <h3><i data-lucide="message-circle" class="icon"></i> Une question avant de t'inscrire ?</h3>
@@ -1212,14 +1207,6 @@ function selectRole(role){
     const f = document.getElementById('form-' + r);
     if (f) f.style.display = (r === role) ? 'block' : 'none';
   });
-  const cta = document.getElementById('inscription-cta');
-  if (cta) cta.style.display = (role === 'soignant') ? 'block' : 'none';
-  const titres = {
-    soignant: 'Tu es soignant·e — bienvenue à bord',
-    skipper:  'Tu es skipper — merci pour ton aide précieuse',
-    benevole: 'Tu es bénévole — l\'équipage t\'attend'
-  };
-  document.getElementById('inscription-titre').textContent = titres[role];
   // Faire défiler doucement jusqu'au formulaire
   setTimeout(() => {
     const f = document.getElementById('form-' + role);
