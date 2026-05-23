@@ -566,7 +566,10 @@ header{background:#1c2d4f !important;box-shadow:0 2px 12px rgba(0,0,0,0.15) !imp
     .container { padding: 1.5rem 1rem !important; }
     .form-role { padding: 1.25rem !important; margin-top: 1rem !important; }
     .form-grid { grid-template-columns: 1fr !important; gap: .75rem 0 !important; }
-    input, select, textarea { width: 100% !important; max-width: 100% !important; box-sizing: border-box; font-size: 16px !important; }
+    input:not([type=checkbox]):not([type=radio]), select, textarea { width: 100% !important; max-width: 100% !important; box-sizing: border-box; font-size: 16px !important; }
+      input[type=checkbox], input[type=radio] { width: auto !important; max-width: none !important; flex-shrink: 0 !important; }
+      .check-grid { grid-template-columns: 1fr !important; }
+      .check-grid label, .form-rgpd { align-items: flex-start !important; word-break: break-word; }
     label, .label, .field-label { font-size: 1rem; }
     .role-card, .sortie-card, .info-box { padding: 1rem !important; }
     h1, h2, h3, h4 { word-wrap: break-word; overflow-wrap: break-word; }
