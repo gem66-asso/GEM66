@@ -557,6 +557,37 @@ header{background:#1c2d4f !important;box-shadow:0 2px 12px rgba(0,0,0,0.15) !imp
   #install-modal .itab.active{color:#1c2d4f;border-bottom-color:#22a942}
   #install-modal .ipanel{display:none}
   #install-modal .ipanel.active{display:block}
+  /* === Fix affichage mobile (Estelle) === */
+  html, body { overflow-x: hidden; max-width: 100%; }
+  *, *::before, *::after { box-sizing: border-box; }
+  img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
+  pre, code { white-space: pre-wrap; word-break: break-word; }
+  @media (max-width: 600px) {
+    .container { padding: 1.5rem 1rem !important; }
+    .form-role { padding: 1.25rem !important; margin-top: 1rem !important; }
+    .form-grid { grid-template-columns: 1fr !important; gap: .75rem 0 !important; }
+    input, select, textarea { width: 100% !important; max-width: 100% !important; box-sizing: border-box; font-size: 16px !important; }
+    label, .label, .field-label { font-size: 1rem; }
+    .role-card, .sortie-card, .info-box { padding: 1rem !important; }
+    h1, h2, h3, h4 { word-wrap: break-word; overflow-wrap: break-word; }
+    h1 { font-size: 1.6rem !important; line-height: 1.2 !important; }
+    h2 { font-size: 1.35rem !important; line-height: 1.25 !important; }
+    h3 { font-size: 1.15rem !important; line-height: 1.3 !important; }
+    .btn, button { white-space: normal; word-wrap: break-word; }
+    a { word-break: break-word; }
+    .roles-bar { gap: .5rem; flex-wrap: wrap; }
+    .role-stat { min-width: 0; }
+    table { display: block; overflow-x: auto; max-width: 100%; }
+    .nav-links, nav { flex-wrap: wrap; }
+    #soignant-helloasso-block, #skipper-helloasso-block, #benevole-helloasso-block { padding: 10px !important; }
+  }
+  @media (max-width: 400px) {
+    .container { padding: 1rem .75rem !important; }
+    .form-role { padding: .9rem !important; }
+    h1 { font-size: 1.4rem !important; }
+    h2 { font-size: 1.2rem !important; }
+  }
+  /* === Fin fix mobile === */
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
